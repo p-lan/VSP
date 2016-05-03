@@ -19,7 +19,7 @@ public class Clientmanager {
     private static final String SERVICE = "eventsService.Eventmanager Service";
     private static final String URI = "http://abs775_events:4567/events";
 
-    private static final Events EVENTS = new Events();
+    //private static final Events EVENTS = new Events();
 
     private static int id = 0;
 
@@ -33,8 +33,8 @@ public class Clientmanager {
         String player = req.queryParams("player") + "";
         String time = req.queryParams("time") + "";
 
-        Event event = new Event(String.valueOf(id++), game, type, name, reason, resource, player, time);
-        EVENTS.addEvent(event);
+   //     Event event = new Event(String.valueOf(id++), game, type, name, reason, resource, player, time);
+        //    EVENTS.addEvent(event);
 
         return "ok";
     }
@@ -47,10 +47,11 @@ public class Clientmanager {
         String resource = req.queryParams("resource") + "";
         String player = req.queryParams("player") + "";
 
-        List<Event> passendeEvents = EVENTS.getEvents(game, type, name, reason, resource, player);
+        //   List<Event> passendeEvents = EVENTS.getEvents(game, type, name, reason, resource, player);
 
         res.status(200);
-        return new Gson().toJson(passendeEvents);
+        // return new Gson().toJson(passendeEvents);
+        return "ok";
     }
 
     public static String deleteEvent(Request req, Response res){
@@ -62,7 +63,7 @@ public class Clientmanager {
         String resource = req.queryParams("resource") + "";
         String player = req.queryParams("player") + "";
 
-        EVENTS.delEvent(game, type, name, reason, resource, player);
+        // EVENTS.delEvent(game, type, name, reason, resource, player);
 
         return "ok";
     }
@@ -70,9 +71,10 @@ public class Clientmanager {
     public static String getEvent(Request req, Response res){
         String eventid = req.params(":eventid") + "";
 
-        Event event = EVENTS.getEvent(eventid);
+        //   Event event = EVENTS.getEvent(eventid);
 
-        return new Gson().toJson(event);
+        //return new Gson().toJson(event);
+        return "ok";
     }
 
     public static void main(String[] args) {
