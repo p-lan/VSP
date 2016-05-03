@@ -2,6 +2,7 @@ package services.events;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Events {
 
@@ -15,10 +16,12 @@ public class Events {
     public void delEvent(String game, String type, String name, String reason, String resource, String player){
         List<Integer> delIndexes = new ArrayList<Integer>();
         for(Event e : events){
-            if(e.getGame().matches("(https://141\\.22\\.34\\.15/cnt/\\d+\\.\\d+\\.\\d+\\.\\d+/\\d\\d\\d\\d/(\\w)+(/\\w)*)|()")
-                    && e.getType().matches("([a-zA-Z_]+)|()") && e.getName().matches("(lmnp_[a-zA-Z_0-9]+)|()") && e.getReason().matches("([a-zA-Z _0-9]+)|()")
-                    && e.getResource().matches("(https://141\\.22\\.34\\.15/cnt/\\d+\\.\\d+\\.\\d+\\.\\d+/\\d\\d\\d\\d/(\\w)+(/\\w)*)|()")
-                    && e.getPlayer().matches("(https://141\\.22\\.34\\.15/cnt/\\d+\\.\\d+\\.\\d+\\.\\d+/\\d\\d\\d\\d/(\\w)+(/\\w)*)|()")){
+            if((game == null || Pattern.matches(e.getGame(), game))
+                    && (type == null || Pattern.matches(e.getType(), type))
+                    && (name == null || Pattern.matches(e.getName(), name))
+                    && (reason == null || Pattern.matches(e.getReason(), reason))
+                    && (resource == null || Pattern.matches(e.getResource(), resource))
+                    && (player == null || Pattern.matches(e.getPlayer(), player))){
                 delIndexes.add(events.indexOf(e));
             }
         }
@@ -41,10 +44,12 @@ public class Events {
         List<Event> temp = new ArrayList();
 
         for(Event e : events){
-            if(e.getGame().matches("(https://141\\.22\\.34\\.15/cnt/\\d+\\.\\d+\\.\\d+\\.\\d+/\\d\\d\\d\\d/(\\w)+(/\\w)*)|()")
-                    && e.getType().matches("([a-zA-Z_]+)|()") && e.getName().matches("(lmnp_[a-zA-Z_0-9]+)|()") && e.getReason().matches("([a-zA-Z _0-9]+)|()")
-                    && e.getResource().matches("(https://141\\.22\\.34\\.15/cnt/\\d+\\.\\d+\\.\\d+\\.\\d+/\\d\\d\\d\\d/(\\w)+(/\\w)*)|()")
-                    && e.getPlayer().matches("(https://141\\.22\\.34\\.15/cnt/\\d+\\.\\d+\\.\\d+\\.\\d+/\\d\\d\\d\\d/(\\w)+(/\\w)*)|()")){
+            if((game == null || Pattern.matches(e.getGame(), game))
+                    && (type == null || Pattern.matches(e.getType(), type))
+                    && (name == null || Pattern.matches(e.getName(), name))
+                    && (reason == null || Pattern.matches(e.getReason(), reason))
+                    && (resource == null || Pattern.matches(e.getResource(), resource))
+                    && (player == null || Pattern.matches(e.getPlayer(), player))){
                 temp.add(e);
             }
         }
