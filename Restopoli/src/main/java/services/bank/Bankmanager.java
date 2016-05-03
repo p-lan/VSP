@@ -1,8 +1,9 @@
-package eventsService;
+package services.bank;
 
 import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
+import util.Registration;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import static spark.Spark.*;
 /**
  * Created by patricklanger on 12.04.16.
  */
-public class Eventmanager {
+public class Bankmanager {
 
     private static final String NAME = "lmnp_events";
     private static final String DESCRIPTION = "eventsService.Eventmanager verwaltet eventsService.Events";
@@ -76,9 +77,9 @@ public class Eventmanager {
 
     public static void main(String[] args) {
         Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
-        post("/events", Eventmanager::postEvent);
-        get("/events", Eventmanager::getEvents);
-        delete("/events", Eventmanager::deleteEvent);
-        get("/events/:eventid", Eventmanager::getEvent);
+        post("/events", Bankmanager::postEvent);
+        get("/events", Bankmanager::getEvents);
+        delete("/events", Bankmanager::deleteEvent);
+        get("/events/:eventid", Bankmanager::getEvent);
     }
 }

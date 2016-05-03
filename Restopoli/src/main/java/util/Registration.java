@@ -1,4 +1,4 @@
-package eventsService;
+package util;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
