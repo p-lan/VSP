@@ -1,0 +1,41 @@
+<html ng-app="RESTopolyClient">
+  <head>
+    <title>Let's play RESTopoly</title>
+    <!-- AngularJS -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+
+    <!-- AngularModules -->
+    <script src="js/app.js"></script>
+
+    <script src="js/controller.js"></script>
+    <script src="js/yellowpagesController.js"></script>
+
+  </head>
+  <body ng-controller="getServices">
+
+    <header>
+      <span>!!! RESTopoly !!!</span>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+
+      <!-- Side Menu -->
+      <div id="side-menu">
+
+      </div>
+
+      <!-- Content -->
+      <div ng-view id="content">
+
+      </div>
+
+    </main>
+
+    <footer>
+      <span>RESTopoly</span>
+    </footer>
+  </bodY>
+</html>
