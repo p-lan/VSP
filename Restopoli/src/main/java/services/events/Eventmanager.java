@@ -14,10 +14,10 @@ import static spark.Spark.*;
  */
 public class Eventmanager {
 
-    private static final String NAME = "lmnp_events_Norman";
-    private static final String DESCRIPTION = "Service.Events verwaltet Events";
-    private static final String SERVICE = "eventsService.Eventmanager Service";
-    private static final String URI = "http://abs775_events:4567/";
+    private static final String NAME = "lmnp";//"lmnp_events_Norman";
+    private static final String DESCRIPTION = "Verwaltet Events";
+    private static final String SERVICE = "events";
+    private static final String URI = "/events";
 
     private static final Events EVENTS = new Events();
 
