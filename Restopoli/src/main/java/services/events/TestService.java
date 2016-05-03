@@ -1,4 +1,4 @@
-package eventsService;
+package services.events;
 
 import javax.json.Json;
 import javax.json.JsonObject;

@@ -1,4 +1,4 @@
-package eventsService;
+package services.events;
 
 public class Event {
 
