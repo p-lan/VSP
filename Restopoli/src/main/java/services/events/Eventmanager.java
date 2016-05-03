@@ -27,7 +27,7 @@ public class Eventmanager {
     	String game = req.queryParams("game");
         String type = req.queryParams("type");
         String name = req.queryParams("name");
-        String reason  = req.queryParams("request");
+        String reason  = req.queryParams("reason");
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
         String time = req.queryParams("time");
@@ -42,7 +42,7 @@ public class Eventmanager {
     	String game = req.queryParams("game");
         String type = req.queryParams("type");
         String name = req.queryParams("name");
-        String reason  = req.queryParams("request");
+        String reason  = req.queryParams("reason");
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
 
@@ -56,7 +56,7 @@ public class Eventmanager {
     	String game = req.queryParams("game");
         String type = req.queryParams("type");
         String name = req.queryParams("name");
-        String reason  = req.queryParams("request");
+        String reason  = req.queryParams("reason");
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
 
