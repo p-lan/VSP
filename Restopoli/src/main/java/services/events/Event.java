@@ -2,7 +2,7 @@ package services.events;
 
 public class Event {
 
-    private String id;//not null
+    private String id;
     private String game;//not null
     private String type;//not null
     private String name;//not null

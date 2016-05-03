@@ -33,4 +33,20 @@ public class Registration {
         json.put("uri", uri);
         return json;
     }
+    
+    
+    private boolean serviceExistiert(String name){
+    	
+    	
+    	return true;
+    }
+    
+    private void delOldService(){
+    	
+    	
+    	
+    }
+    
+    
+    
 }

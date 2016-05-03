@@ -14,20 +14,18 @@ public class Events {
     }
 
     public void delEvent(String game, String type, String name, String reason, String resource, String player){
-        List<Integer> delIndexes = new ArrayList<Integer>();
-        for(Event e : events){
-            if((game == null || Pattern.matches(e.getGame(), game))
-                    && (type == null || Pattern.matches(e.getType(), type))
-                    && (name == null || Pattern.matches(e.getName(), name))
-                    && (reason == null || Pattern.matches(e.getReason(), reason))
-                    && (resource == null || Pattern.matches(e.getResource(), resource))
-                    && (player == null || Pattern.matches(e.getPlayer(), player))){
-                delIndexes.add(events.indexOf(e));
+    	List<Event> temp = new ArrayList();
+    	for(Event e : events){
+            if((game == null || Pattern.matches(game, e.getGame()))
+                    && (type == null || Pattern.matches(type, e.getType()))
+                    && (name == null || Pattern.matches(name, e.getName()))
+                    && (reason == null || Pattern.matches(reason, e.getReason()))
+                    && (resource == null || Pattern.matches(resource, e.getResource()))
+                    && (player == null || Pattern.matches(player, e.getPlayer()))){
+            	temp.add(e);
             }
         }
-        for (Integer i : delIndexes){
-            events.remove(i);
-        }
+    	events.removeAll(temp); 
     }
 
     public Event getEvent(String id){
@@ -44,12 +42,12 @@ public class Events {
         List<Event> temp = new ArrayList();
 
         for(Event e : events){
-            if((game == null || Pattern.matches(e.getGame(), game))
-                    && (type == null || Pattern.matches(e.getType(), type))
-                    && (name == null || Pattern.matches(e.getName(), name))
-                    && (reason == null || Pattern.matches(e.getReason(), reason))
-                    && (resource == null || Pattern.matches(e.getResource(), resource))
-                    && (player == null || Pattern.matches(e.getPlayer(), player))){
+            if((game == null || Pattern.matches(game, e.getGame()))
+                    && (type == null || Pattern.matches(type, e.getType()))
+                    && (name == null || Pattern.matches(name, e.getName()))
+                    && (reason == null || Pattern.matches(reason, e.getReason()))
+                    && (resource == null || Pattern.matches(resource, e.getResource()))
+                    && (player == null || Pattern.matches(player, e.getPlayer()))){
                 temp.add(e);
             }
         }
