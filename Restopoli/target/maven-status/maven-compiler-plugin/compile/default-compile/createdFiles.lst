@@ -1,5 +1,5 @@
-TestService.class
-Event.class
-Eventmanager.class
-Registration.class
-Events.class
+eventsService/Registration.class
+eventsService/Events.class
+eventsService/TestService.class
+eventsService/Eventmanager.class
+eventsService/Event.class
