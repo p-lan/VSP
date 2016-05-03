@@ -6,11 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e0c1f96-c719-4e38-8c2b-96eec330cb2d" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java.zip" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/eventsService/Events.java" afterPath="$PROJECT_DIR$/src/main/java/eventsService/Events.java" />
-    </list>
+    <list default="true" id="9e0c1f96-c719-4e38-8c2b-96eec330cb2d" name="Default" comment="" />
     <ignored path="Restopoli.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
