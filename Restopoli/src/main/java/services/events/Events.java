@@ -38,7 +38,6 @@ public class Events {
     }
 
     public List<Event> getEvents(String game, String type, String name, String reason, String resource, String player){
-
         List<Event> temp = new ArrayList();
 
         for(Event e : events){

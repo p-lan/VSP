@@ -45,7 +45,7 @@ public class Eventmanager {
         String reason  = req.queryParams("reason");
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
-
+        
         List<Event> passendeEvents = EVENTS.getEvents(game, type, name, reason, resource, player);
 
         res.status(200);
@@ -59,7 +59,7 @@ public class Eventmanager {
         String reason  = req.queryParams("reason");
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
-
+        
         EVENTS.delEvent(game, type, name, reason, resource, player);
 
         return "ok";
@@ -82,9 +82,10 @@ public class Eventmanager {
     public static void main(String[] args) {
         //Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
     	get("/", Eventmanager::isAlive);
+    	get("/events", Eventmanager::getEvents);
+    	get("/events/:eventid", Eventmanager::getEvent);
     	post("/events", Eventmanager::postEvent);
-        get("/events", Eventmanager::getEvents);
         delete("/events", Eventmanager::deleteEvent);
-        get("/events/:eventid", Eventmanager::getEvent);
+        
     }
 }
