@@ -4,11 +4,15 @@ app.controller('getServices', ['$scope', '$http', function ($scope, $http){
 
   $scope.games = ["http://123","http://1234","http://12345"];
   $scope.openGames = [];
+  var helpUrl = "";
 
-  getServicesByName();
+  //getServicesByName();
+  getGames();
 
   $scope.joinGame = function (){
-    console.log($scope.user);
+    console.log($scope.user.game);
+    window.localStorage['user'] = JSON.stringify($scope.user);
+    console.log(window.localStorage['user']);
     window.location.href="#/play"
   };
 
@@ -19,13 +23,15 @@ app.controller('getServices', ['$scope', '$http', function ($scope, $http){
     // Get service-id by name and put them in gameIds-array
     $http({
       method: 'GET',
-      url: ' https://141.22.34.15/cnt/172.18.0.5/4567/services/of/name/lmnp_events'
+      url: ' https://141.22.34.15/cnt/172.18.0.5/4567/services/of/name/lmnp_games'
     }).then(function successCallback(response) {
+      console.log("ServiceIDs: " + resonse);
       gameIds = response.data.services.slice();
     }, function errorCallback(response) {
       console.log("Something is going wrong");
     }).then(function gotData(){
       gameIds.forEach(getURI);
+        console.log("gameIds: " + gameIds);
     }).then(function test(){
       console.log("test");
     });
@@ -56,15 +62,11 @@ app.controller('getServices', ['$scope', '$http', function ($scope, $http){
       url: ' https://141.22.34.15/cnt/172.18.0.5/4567/services/of/name/lmnp_games'
     }).then(function successCallback(response) {
       gameServiceIds = response.data.services.slice();
+        console.log(gameServiceIds);
     }, function errorCallback(response) {
       console.log("Something is going wrong on gameServiceIds");
     }).then(function thenGetGameServiceUrl(){
       gameServiceIds.forEach(getGameServiceUrl); //--- 1
-    }).then(function thenGetGameUrls(){
-      console.log("gameServiceUrl: " + gameServiceUrl);
-      gameServiceUrl.forEach(getGameUrls); //--- 2
-    }).then(function thenSaveOpenGames(){
-      gameUrls.forEach(saveOpenGames); //--- 3
     });
 
     //--- 1
@@ -75,46 +77,39 @@ app.controller('getServices', ['$scope', '$http', function ($scope, $http){
         url: 'https://141.22.34.15/cnt/172.18.0.5/4567' + id
       }).then(function successCallback(response) {
         gameServiceUrl.push(response.data.uri);
+        console.log("gameServiceUrl: " + gameServiceUrl);
       }, function errorCallback(response) {
         console.log("Something is going wrong on gameServiceUrl");
+      }).then(function thenGetGameUrls(){
+      console.log("gameServiceUrl: " + gameServiceUrl);
+        gameServiceUrl.forEach(getGameUrls); //--- 2
       });
     };
-
     //--- 2
     // Search for Game URLs with gameServiceUrl
     var getGameUrls = function(serviceUrl, i, array){
       $http({
         method: 'GET',
-        url: serviceUrl + "/games"
+        url: serviceUrl
       }).then(function successCallback(response) {
         //gameUrls.concat(response.data.id);
-        response.data.id.forEach(fillGameUrls);
-        // Hilfsfunktion
-        var fillGameUrls = function(url, i, array){
-          gameUrls.push(serviceUrl + url);
-          console.log(serviceUrl + url);
-        }
+        console.log(serviceUrl);
+        helpUrl = serviceUrl;
+        var s = response.data[0];
+        console.log("id: " + s.id);
+        response.data.forEach(fillGameUrls);
+        console.log("openGames: " + $scope.openGames);
       }, function errorCallback(response) {
         console.log("Something is going wrong on gameServiceUrl");
       });
     };
-
-    //--- 3
-    // Search for Open Games with Game URLs
-    var saveOpenGames = function(gameUrl, i, array){
-      $http({
-        method: 'GET',
-        url: gameUrl + "/status"
-      }).then(function successCallback(response) {
-        if (response.localeCompare("finished") != 0) {
-          $scope.openGames.push(gameUrl);
-          console.log("Open Games : " + gameUrl);
-        }
-      }, function errorCallback(response) {
-        console.log("Something is going wrong on gameServiceUrl");
-      });
-    };
+    // Hilfsfunktion
+    var fillGameUrls = function(game, i, array){
+      if (game.status.localeCompare("FINISHED") != 0) {
+        $scope.openGames.push(helpUrl + "/" + game.id);
+      }
+    }
 
   };
-  
+
 }]);
