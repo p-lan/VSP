@@ -10,10 +10,28 @@ app.controller('getServices', ['$scope', '$http', function ($scope, $http){
   getGames();
 
   $scope.joinGame = function (){
-    console.log($scope.user.game);
+    var request = {
+      "name" : "/user/" + $scope.user.name,
+      "ready" : false
+    };
+    console.log(request);
+    $http({
+      method: 'POST',
+      url: $scope.user.game,
+      dataType: 'json',
+      data: request,
+      headers: { 'Content-Type': 'application/json' }
+    }).then(function successCallback(response) {
+
+    }, function errorCallback(response) {
+      console.log("Something is going wrong");
+    });
+
+    // TODO diesen block zu successCallback schieben
     window.localStorage['user'] = JSON.stringify($scope.user);
     console.log(window.localStorage['user']);
     window.location.href="#/play"
+    
   };
 
   //---------------------- TEST - Functions --------------------//

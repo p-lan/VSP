@@ -2,9 +2,7 @@ var playCtrl = angular.module('playCtrl', []);
 
 app.controller('getGame', ['$scope', '$http', function ($scope, $http){
 
-
-
-  $scope.joinGameasd = function (){
+  $scope.joinGame = function (){
     var user = JSON.parse(window.localStorage['user'] || '{}');
     $scope.user = user;
     console.log($scope.user);
@@ -20,3 +18,9 @@ app.controller('getGame', ['$scope', '$http', function ($scope, $http){
   };
 
 }]);
+
+
+$http.post('/client/turn', function(req, res){
+    var user = req.body;
+    console.log(req);
+});
