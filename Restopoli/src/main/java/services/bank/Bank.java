@@ -1,26 +1,43 @@
 package services.bank;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Bank {
 	
+	private Map<String,Account> zugehoerigeAccounts;
+	private int bankID=0;
 	
-	private Map<String,Player> zugehoerigeSpieler;
 	
-	
-	public Bank(){
-		this.zugehoerigeSpieler = new HashMap<String,Player>();
+	public Bank(int id){
+		this.zugehoerigeAccounts = new HashMap<String, Account>();
+		this.bankID=id;
 	}
 	
 	
-	public boolean addPlayer(String id, Player player){
+	public getBankID(){
 		
-		//TODO check ob spieler schon vorhanden
+	}
+	
+	
+	
+	public void addPlayer(Account acc){
+		Account p = zugehoerigeAccounts.get(acc.getId());
+		if(p == null) {
+			this.zugehoerigeAccounts.put(acc.getId(), acc);
+		}
+	}
+	
+	public int getKontostand(String playerID){
 		
-		this.zugehoerigeSpieler.put(id, player);
-		
-		return true;
+		Account p = zugehoerigeAccounts.get(playerID);
+		if(p != null) {
+			return p.getSaldo();
+		}
+				
+		return 0;
 	}
 	
 	

@@ -44,7 +44,7 @@ public class Registration {
 
     	try {
     		ip = InetAddress.getLocalHost();
-    		fullUri= "https://141.22.34.15/cnt/172.18.0.5/4567/cnt/"+ip.getHostAddress()+"/4567/tcp"+uri;
+    		fullUri= "http://"+ip.getHostAddress()+":4567"+uri;
     		HttpResponse<String> res = Unirest.post(YELLOW_PAGES)
 	                .header("Content-Type", "application/json")
 	                .body(createBody(name, description, service, fullUri))

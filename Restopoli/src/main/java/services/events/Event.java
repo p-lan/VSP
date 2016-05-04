@@ -53,5 +53,8 @@ public class Event {
     public String getTime() {
         return time;
     }
+    public void setID(String id){
+    	this.id=id;
+    }
 
 }

@@ -16,16 +16,32 @@ import static spark.Spark.*;
  */
 public class BankService {
 
-    private static final String NAME = "lmnp";
+    private static final String NAME = "lmnp_banks";
     private static final String DESCRIPTION = "Bank service";
     private static final String SERVICE = "bank";
     private static final String URI = "/banks";
 
-   
+    
+    private static Banken bankmanager = new Banken();
 
+    
+    
+    public static String getBanken(Request req, Response res){
+    	
+    	
+    	
+    	return "ok";
+    }
+    
     public static String kontoErstellen(Request req, Response res){
     	String gameID = req.params(":gameid");
-      
+    	String playerID = req.params("playerid");
+    	String playerName = req.params("name");
+    	int playerSaldo = 0;
+    	
+    	    	
+    	bankmanager.createBank(gameID, new Account(playerID,playerName,playerSaldo));
+    	res.status(200);
     	return "ok";
     }
 
@@ -33,6 +49,9 @@ public class BankService {
     	String gameID = req.params(":gameid");
     	String playerID = req.params(":playerid");
         
+    	
+    	bankmanager.getKontostand(gameID, playerID);
+    	
     	return "ok";
     }
     
@@ -70,8 +89,11 @@ public class BankService {
 
     public static void main(String[] args) {
         Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
-        
+        //isAlive
         get("/", BankService::isAlive);
+        // Banks
+        
+        get("/banks", BankService::getBanken); 
         
         post("/banks/:gameid/players", BankService::kontoErstellen);
         get("/banks/:gameid/players/:playerid", BankService::kontostandAbfragen);

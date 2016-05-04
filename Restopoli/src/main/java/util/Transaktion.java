@@ -1,18 +1,18 @@
 package util;
 
-import services.bank.Player;
+import services.bank.Account;
 
 public class Transaktion {
 
-	private Player player;
+	private Account player;
 	private int amount;
 	
-	public Transaktion(Player player, int amount) {
+	public Transaktion(Account player, int amount) {
 		this.player = player;
 		this.amount = amount;
 	}
 	
-	public Player getAccount() {
+	public Account getAccount() {
 		return this.player;
 	}
 	
