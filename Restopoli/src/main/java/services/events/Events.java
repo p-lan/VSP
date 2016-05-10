@@ -16,6 +16,8 @@ public class Events {
     public void delEvent(String game, String type, String name, String reason, String resource, String player){
     	List<Event> temp = new ArrayList();
     	for(Event e : events){
+            System.out.println("del: e.game: " + e.getGame() + ", game: " + game);
+            System.out.println("del: e.player: " + e.getPlayer() + ", player: " + player);
             if((game == null || Pattern.matches(game, e.getGame()))
                     && (type == null || Pattern.matches(type, e.getType()))
                     && (name == null || Pattern.matches(name, e.getName()))
@@ -41,6 +43,8 @@ public class Events {
         List<Event> temp = new ArrayList();
 
         for(Event e : events){
+            System.out.println("get: e.game: " + e.getGame() + ", game: " + game);
+            System.out.println("get: e.player: " + e.getPlayer() + ", player: " + player);
             if((game == null || Pattern.matches(game, e.getGame()))
                     && (type == null || Pattern.matches(type, e.getType()))
                     && (name == null || Pattern.matches(name, e.getName()))

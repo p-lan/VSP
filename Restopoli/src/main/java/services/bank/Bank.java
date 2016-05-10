@@ -17,7 +17,7 @@ public class Bank {
 	}
 	
 	
-	public getBankID(){
+	public void getBankID(){
 		
 	}
 	

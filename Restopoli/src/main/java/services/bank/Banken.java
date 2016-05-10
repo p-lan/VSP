@@ -42,7 +42,7 @@ public class Banken {
 
 		Bank bank = zumSpielgehoerigeBanken.get(gameID);
 		if(bank == null) {
-			bank = new Bank(gameID);
+			// TODO bank = new Bank(gameID);
 			zumSpielgehoerigeBanken.put(gameID, bank);
 		}
 		bank.addPlayer(player);	

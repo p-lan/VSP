@@ -40,7 +40,7 @@ public class Eventmanager {
         if(event.getGame().isEmpty() && event.getType().isEmpty() 
         							&& event.getName().isEmpty() && event.getReason().isEmpty()){
         	res.status(404);
-        	return "Eines oder alle benötigten Felder (game,type,name oder reason) nicht angegeben!";
+        	return "Eines oder alle benï¿½tigten Felder (game,type,name oder reason) nicht angegeben!";
         }
         else{
         	event.setID(String.valueOf(id++));
@@ -59,6 +59,9 @@ public class Eventmanager {
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
 
+        System.out.println("game: " + game);
+        System.out.println("player: " + player);
+
         List<Event> passendeEvents = EVENTS.getEvents(game, type, name, reason, resource, player);
 
         res.status(200);
@@ -72,6 +75,9 @@ public class Eventmanager {
         String reason  = req.queryParams("request");
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
+
+        System.out.println("game: " + game);
+        System.out.println("player: " + player);
 
        
         EVENTS.delEvent(game, type, name, reason, resource, player);
