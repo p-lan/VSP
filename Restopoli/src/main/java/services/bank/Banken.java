@@ -29,7 +29,7 @@ public class Banken {
 		
 		Bank bank = zumSpielgehoerigeBanken.get(gameID);
 		if(bank == null) {
-			bank = new Bank(id++);
+			bank = new Bank(String.valueOf(id++));
 			zumSpielgehoerigeBanken.put(gameID, bank);
 		}
 		
@@ -42,7 +42,7 @@ public class Banken {
 
 		Bank bank = zumSpielgehoerigeBanken.get(gameID);
 		if(bank == null) {
-			// TODO bank = new Bank(gameID);
+			bank = new Bank(gameID);
 			zumSpielgehoerigeBanken.put(gameID, bank);
 		}
 		bank.addPlayer(player);	

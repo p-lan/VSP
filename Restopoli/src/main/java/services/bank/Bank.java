@@ -8,19 +8,13 @@ import java.util.Map;
 public class Bank {
 	
 	private Map<String,Account> zugehoerigeAccounts;
-	private int bankID=0;
+	private String bankID;
 	
 	
-	public Bank(int id){
+	public Bank(String id){
 		this.zugehoerigeAccounts = new HashMap<String, Account>();
 		this.bankID=id;
 	}
-	
-	
-	public void getBankID(){
-		
-	}
-	
 	
 	
 	public void addPlayer(Account acc){
