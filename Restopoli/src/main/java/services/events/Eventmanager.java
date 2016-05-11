@@ -100,7 +100,7 @@ public class Eventmanager {
     }
 
     public static void main(String[] args) {
-        //Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
+        Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
     	get("/", Eventmanager::isAlive);
     	get("/events", Eventmanager::getEvents);
     	get("/events/:eventid", Eventmanager::getEvent);
