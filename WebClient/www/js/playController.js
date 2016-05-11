@@ -22,6 +22,5 @@ app.controller('getGame', ['$scope', '$http', function ($scope, $http){
 
 $http.post('/client/turn', function(req, res){
     var user = req.body;
-    console.log("asd" + req);
-    res.send("OMG");
+    console.log(req);
 });

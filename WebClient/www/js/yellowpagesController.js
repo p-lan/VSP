@@ -17,7 +17,7 @@ app.controller('getServices', ['$scope', '$http', function ($scope, $http){
     console.log(request);
     $http({
       method: 'POST',
-      url: $scope.user.game,
+      url: $scope.user.game + "/players",
       dataType: 'json',
       data: request,
       headers: { 'Content-Type': 'application/json' }
@@ -31,7 +31,7 @@ app.controller('getServices', ['$scope', '$http', function ($scope, $http){
     window.localStorage['user'] = JSON.stringify($scope.user);
     console.log(window.localStorage['user']);
     window.location.href="#/play"
-    
+
   };
 
   //---------------------- TEST - Functions --------------------//
