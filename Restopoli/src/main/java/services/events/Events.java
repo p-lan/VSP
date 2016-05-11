@@ -11,13 +11,12 @@ public class Events {
 
     public void addEvent(Event event){
         events.add(event);
+        System.out.println("Post: " + event.getGame());
     }
 
     public void delEvent(String game, String type, String name, String reason, String resource, String player){
     	List<Event> temp = new ArrayList();
     	for(Event e : events){
-            System.out.println("del: e.game: " + e.getGame() + ", game: " + game);
-            System.out.println("del: e.player: " + e.getPlayer() + ", player: " + player);
             if((game == null || Pattern.matches(game, e.getGame()))
                     && (type == null || Pattern.matches(type, e.getType()))
                     && (name == null || Pattern.matches(name, e.getName()))
@@ -25,6 +24,7 @@ public class Events {
                     && (resource == null || Pattern.matches(resource, e.getResource()))
                     && (player == null || Pattern.matches(player, e.getPlayer()))){
             	temp.add(e);
+                System.out.println("Delete: " + e.getGame());
             }
         }
     	events.removeAll(temp); 
@@ -43,8 +43,6 @@ public class Events {
         List<Event> temp = new ArrayList();
 
         for(Event e : events){
-            System.out.println("get: e.game: " + e.getGame() + ", game: " + game);
-            System.out.println("get: e.player: " + e.getPlayer() + ", player: " + player);
             if((game == null || Pattern.matches(game, e.getGame()))
                     && (type == null || Pattern.matches(type, e.getType()))
                     && (name == null || Pattern.matches(name, e.getName()))
@@ -52,6 +50,7 @@ public class Events {
                     && (resource == null || Pattern.matches(resource, e.getResource()))
                     && (player == null || Pattern.matches(player, e.getPlayer()))){
                 temp.add(e);
+                System.out.println("Get: " + e.getGame());
             }
         }
         return temp;
