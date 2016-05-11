@@ -17,9 +17,6 @@ public class Banken {
 		
 	}
 	
-	
-	
-	
 	public Map<String,Bank> getAllBanks(){
 		
 		return zumSpielgehoerigeBanken;
