@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
+import util.Registration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +30,9 @@ public class Clientmanager {
     private static List<Client> _clientList = new ArrayList<>();
     private static int nextUserId;
 
-    private static List<String> openGames = new ArrayList<>();
-
     public static void main(String[] args) {
 
-        //Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
+        Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
 
         nextUserId = 0;
 
@@ -41,23 +40,9 @@ public class Clientmanager {
         webSocket("/user", ClientWebSocketHandler.class);
         init();
 
-//        TODO siehe die beiden folgenden Zeilen
-//        get("/", Clientmanager::isAlive);
+//        TODO Post Events
 //        post("/client/event", Clientmanager::postEvent);
         post("/client/turn", Clientmanager::setTurn);
-    }
-
-    /**
-     * Behindert momentan nocht den Aufruf der website...
-     * TODO Funktion muss laufen!!
-     * @param req
-     * @param res
-     * @return
-     */
-    private static String isAlive(Request req, Response res){
-        res.status(200);
-
-        return "ok";
     }
 
     //-----------------------------------POST EVENT------------------------------

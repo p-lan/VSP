@@ -7,8 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e0c1f96-c719-4e38-8c2b-96eec330cb2d" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/VSP1-1.0-SNAPSHOT-jar-with-dependencies.jar" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/VSP1-1.0-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/target/VSP1-1.0-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/client/Clientmanager.class" afterPath="$PROJECT_DIR$/target/classes/client/Clientmanager.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/client/Clientmanager.java" afterPath="$PROJECT_DIR$/src/main/java/client/Clientmanager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/public/websocket.js" afterPath="$PROJECT_DIR$/src/main/resources/public/websocket.js" />
     </list>
     <ignored path="Restopoli.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -64,8 +67,8 @@
       <file leaf-file-name="Clientmanager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/client/Clientmanager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="62" column="51" selection-start-line="62" selection-start-column="51" selection-end-line="62" selection-end-column="51" />
+            <state relative-caret-position="450">
+              <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1069,8 +1072,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/client/Clientmanager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="62" column="51" selection-start-line="62" selection-start-column="51" selection-end-line="62" selection-end-column="51" />
+        <state relative-caret-position="450">
+          <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
