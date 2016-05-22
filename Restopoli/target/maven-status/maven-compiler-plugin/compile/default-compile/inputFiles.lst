@@ -1,5 +1,13 @@
 /Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/events/Events.java
-/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/events/Eventmanager.java
-/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/util/Registration.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/bank/Bank.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/bank/Banken.java
 /Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/events/TestService.java
 /Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/events/Event.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/client/Clientmanager.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/bank/Account.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/events/Eventmanager.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/client/Client.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/util/Registration.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/client/ClientWebSocketHandler.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/util/Transaktion.java
+/Users/patricklanger/Studium/AI-S5/Verteilte Systeme/VSP/Restopoli/src/main/java/services/bank/BankService.java

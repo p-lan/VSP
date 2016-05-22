@@ -22,17 +22,38 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!--<plugin>-->
+                <!--<groupId>com.jolira</groupId>-->
+                <!--<artifactId>onejar-maven-plugin</artifactId>-->
+                <!--<version>1.4.4</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<configuration>-->
+                            <!--<mainClass>eventsService.Eventmanager</mainClass>-->
+                        <!--</configuration>-->
+                        <!--<goals>-->
+                            <!--<goal>one-jar</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
-                <groupId>com.jolira</groupId>
-                <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.4</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>client.Clientmanager</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
                 <executions>
                     <execution>
-                        <configuration>
-                            <mainClass>eventsService.Eventmanager</mainClass>
-                        </configuration>
+                        <phase>package</phase>
                         <goals>
-                            <goal>one-jar</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -68,7 +89,11 @@
             <artifactId>unirest-java</artifactId>
             <version>1.4.9</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.j2html</groupId>
+            <artifactId>j2html</artifactId>
+            <version>0.7</version>
+        </dependency>
 
 
     </dependencies>
