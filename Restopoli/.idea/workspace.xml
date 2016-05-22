@@ -6,13 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e0c1f96-c719-4e38-8c2b-96eec330cb2d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/client/Client.java" afterPath="$PROJECT_DIR$/src/main/java/client/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/client/ClientWebSocketHandler.java" afterPath="$PROJECT_DIR$/src/main/java/client/ClientWebSocketHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/client/Clientmanager.java" afterPath="$PROJECT_DIR$/src/main/java/client/Clientmanager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/public/index.html" afterPath="$PROJECT_DIR$/src/main/resources/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/public/websocket.js" afterPath="$PROJECT_DIR$/src/main/resources/public/websocket.js" />
-    </list>
+    <list default="true" id="9e0c1f96-c719-4e38-8c2b-96eec330cb2d" name="Default" comment="" />
     <ignored path="Restopoli.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
