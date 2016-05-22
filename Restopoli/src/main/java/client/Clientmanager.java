@@ -1,6 +1,7 @@
 package client;
 
 import com.google.gson.Gson;
+import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -17,6 +18,8 @@ import spark.Response;
 import util.Registration;
 
 import javax.net.ssl.SSLContext;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -25,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.description;
 import static spark.Spark.*;
 
 /**
@@ -39,7 +43,7 @@ public class Clientmanager {
 
     private static final String YELLOW_PAGES = "http://172.18.0.5:4567";
 
-    private static Map<Session, Client> _clientMap = new HashMap<>();
+    private static List<Client> _clientList = new ArrayList<>();
     private static int nextUserId;
 
     private static List<String> openGames = new ArrayList<>();
@@ -85,8 +89,6 @@ public class Clientmanager {
             json.put("ERROR", obj.getClass().getName() + " is not allowed!");
         }
 
-
-
         try {
             session.getRemote().sendString(String.valueOf(json));
         } catch (Exception e) {
@@ -119,12 +121,41 @@ public class Clientmanager {
         return "";
     }
 
-    public static void addToClientMap(Session session, Client client) {
-        _clientMap.put(session, client);
+    private static boolean usernameIsAvailable(String name){
+        boolean isAvailable = true;
+
+        for (Client client: _clientList) {
+            if (client.get_username().equals(name)){
+                isAvailable = false;
+            }
+        }
+
+        return isAvailable;
     }
 
-    public static int getNextUserId() {
-        return nextUserId++;
+    static void signupUser(Session session, String name, String game){
+        if (usernameIsAvailable(name)){
+            _clientList.add(new Client(nextUserId++, session, name));
+
+            JSONObject player = new JSONObject();
+            player.put("user", "/user/"+name);
+            player.put("ready", false);
+            try {
+                HttpResponse<String> res = Unirest.post(game + "/players")
+                        .header("Content-Type", "application/json")
+                        .body(player)
+                        .asString();
+
+                sendIt(session, "Hi " + name + ", good Luck for you. I hope you get rich!", "signedup");
+            } catch (UnirestException e) {
+                e.printStackTrace();
+
+                sendIt(session, "Hi " + name + ", something went wrong : " + e, "notsignedup");
+            }
+        } else {
+            sendIt(session, "Hey Dude, you need a fancy name!", "notsignedup");
+        }
+
     }
 
     //-----------------------------------GET GAMES------------------------------

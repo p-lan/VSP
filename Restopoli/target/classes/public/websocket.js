@@ -14,9 +14,11 @@ id("message").addEventListener("keypress", function (e) {
 });
 
 //Send message if "Send" is clicked
-id("showgames").addEventListener("click", function () {
+id("signup").addEventListener("click", function () {
     console.log("button pressed");
-    webSocket.send("001" + id("opengames").value + "," + id("name").value);
+    username = id("name").value.trim();
+    if (username.length > 2 && username.length < 20)
+        webSocket.send("001" + id("opengames").value + "," + username);
 });
 
 ////Send a message if it's not empty, then clear the input field
@@ -36,7 +38,7 @@ function updateChat(msg) {
     var data = JSON.parse(msg.data);
 
     // show games --------------------------------------
-    if(typeof data.games !== "undefined"){
+    if(typeof data.games !== "undefined"){                      // if there are open games for you
         var str = data.games;
         str = str.replace("[","");
         str = str.replace("]","");
@@ -55,8 +57,17 @@ function updateChat(msg) {
             });
         }
 
-    } else {
-        console.log("games undefined");
+    } else if(typeof data.signedup !== "undefined"){            // if signed up
+        id("name").style.display="none";
+        id("signup").style.display="none";
+        id("opengames").style.display="none";
+        console.log(data.signedup);
+
+    } else if (typeof data.notsignedup !== "undefined"){        // if not signed up
+
+    }
+    else {
+        console.log("Message is undefined");
     }
 }
 

@@ -1,5 +1,7 @@
 package client;
 
+import org.eclipse.jetty.websocket.api.Session;
+
 /**
  * Created by patricklanger on 20.05.16.
  */
@@ -9,17 +11,29 @@ public class Client {
     private String _username;
     private String _gameUrl;
     private String _userUrl;
+    private Session _session;
 
     /**
      * Constructor
      * @param id zur Verwaltung im Clientmanager
      */
-    public Client(int id){
+    public Client(int id, Session session, String name){
         _id = id;
+        _session = session;
+        _username = name;
     }
 
 
     // ---- Getter und Setter ---- //
+
+
+    public Session get_session() {
+        return _session;
+    }
+
+    public void set_session(Session _session) {
+        this._session = _session;
+    }
 
     public String get_userUrl() {
         return _userUrl;

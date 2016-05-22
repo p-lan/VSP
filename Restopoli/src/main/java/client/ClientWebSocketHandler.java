@@ -14,7 +14,7 @@ public class ClientWebSocketHandler {
 
     @OnWebSocketConnect
     public void onConnect(Session user) throws Exception {
-        Client client = new Client(Clientmanager.getNextUserId());
+        //Client client = new Client(Clientmanager.getNextUserId());
         //Clientmanager.addToClientMap(user, client);
         Clientmanager.getGames(user);
         //Clientmanager.sendIt(user, "Hello User! Your id is : " + client.get_id(), "have fun!");
