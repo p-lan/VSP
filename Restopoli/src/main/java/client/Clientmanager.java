@@ -1,34 +1,17 @@
 package client;
 
-import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContexts;
 import org.eclipse.jetty.websocket.api.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
-import util.Registration;
 
-import javax.net.ssl.SSLContext;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.description;
 import static spark.Spark.*;
 
 /**
@@ -58,20 +41,46 @@ public class Clientmanager {
         webSocket("/user", ClientWebSocketHandler.class);
         init();
 
-          //get("/", Clientmanager::isAlive);
-//        get("/client/turn", Clientmanager::getTurn);
-//        post("/client/joinGame", Clientmanager::postJoinGame);
-//        post("/client/rollDice", Clientmanager::postRollDice);
-//        post("/client/turn", Clientmanager::postTurn);
+//        TODO siehe die beiden folgenden Zeilen
+//        get("/", Clientmanager::isAlive);
 //        post("/client/event", Clientmanager::postEvent);
+        post("/client/turn", Clientmanager::setTurn);
     }
 
+    /**
+     * Behindert momentan nocht den Aufruf der website...
+     * TODO Funktion muss laufen!!
+     * @param req
+     * @param res
+     * @return
+     */
     private static String isAlive(Request req, Response res){
         res.status(200);
 
         return "ok";
     }
 
+    //-----------------------------------POST EVENT------------------------------
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    private static String postEvent(Request request, Response response) {
+
+        return "";
+    }
+
+    //-----------------------------------SEND MSG------------------------------
+
+    /**
+     * Verschicke Nachrichten ueber den Websocket
+     * @param session die Session in der gesendet werden soll
+     * @param obj das Objekt kann String oder List<String> sein
+     * @param msg Der Key fuer das JSONObjekt das verschickt wird
+     */
     static void sendIt(Session session, Object obj, String msg){
 
         JSONObject json = new JSONObject();
@@ -96,31 +105,48 @@ public class Clientmanager {
         }
     }
 
-    private static String getTurn(Request request, Response response) {
+    //-----------------------------------SET TURN------------------------------
 
-        return "";
+    /**
+     * Spieler bescheid geben dass er an der Reihe ist
+     * @param request siehe raml
+     * @param response
+     * @return ok, was auch immer passiert TODO was muss ich returnen?
+     */
+    private static String setTurn(Request request, Response response) {
+
+        String player = new JSONObject(request.body()).get("player").toString();
+        String[] playersplit = player.split("/");
+        String name = playersplit[playersplit.length-1];
+
+        System.out.println("Its your turn, " + getClient(name).get_username());
+
+        sendIt(getClient(name).get_session(), "It's your turn, Baby!", "turn");
+
+        return "OK";
     }
 
-    private static String postJoinGame(Request request, Response response) {
-
-        return "";
+    /**
+     * suche mir den passenden Client zum Namen
+     * @param name der Name
+     * @return der Client
+     */
+    private static Client getClient (String name){
+        for (Client client: _clientList) {
+            if (client.get_username().equals(name)){
+                return client;
+            }
+        }
+        return null;
     }
 
-    private static String postRollDice(Request request, Response response) {
+    //-----------------------------------ROLL DICE------------------------------
 
-        return "";
-    }
-
-    private static String postTurn(Request request, Response response) {
-
-        return "";
-    }
-
-    private static String postEvent(Request request, Response response) {
-
-        return "";
-    }
-
+    /**
+     * Such die Dice-URI zum game
+     * @param gameUri die GameURI
+     * @return die DiceURI
+     */
     private static String getDice(String gameUri){
         String diceUri = null;
 
@@ -143,6 +169,11 @@ public class Clientmanager {
         return diceUri;
     }
 
+    /**
+     * Suche den passenden Clienten zu der Session
+     * @param session Die Session
+     * @return Der Client
+     */
     private static Client getClient (Session session){
         for (Client client: _clientList) {
             if (client.get_session().equals(session)){
@@ -152,6 +183,10 @@ public class Clientmanager {
         return null;
     }
 
+    /**
+     * Rolle den Dice
+     * @param session Die Session von der ein Dice-Wurf angevordert wird
+     */
     public static void rollDice(Session session) {
 
         Client client = getClient(session);
@@ -180,9 +215,9 @@ public class Clientmanager {
     //-----------------------------------SIGN UP------------------------------
 
     /**
-     *
-     * @param name
-     * @return
+     * Pruefe ob der Username schon vergeben ist
+     * @param name Der zu pruefende Name
+     * @return true wenn der Name noch frei ist
      */
     private static boolean usernameIsAvailable(String name){
         boolean isAvailable = true;
@@ -197,10 +232,10 @@ public class Clientmanager {
     }
 
     /**
-     *
-     * @param session
-     * @param name
-     * @param game
+     * Trage den User fuer ein Game ein
+     * @param session Die Session von der der Auftrag kommt
+     * @param name Der noch zu pruefende Wunschname des Users
+     * @param game Das ausgewaehlte Game des Users
      */
     static void signupUser(Session session, String name, String game){
         if (usernameIsAvailable(name)){

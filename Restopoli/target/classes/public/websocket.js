@@ -20,18 +20,6 @@ id("rolldice").addEventListener("click", function () {
     id("wait").style.display="block";
 });
 
-////Send a message if it's not empty, then clear the input field
-//function sendMessage(message) {
-//    console.log(message);
-//    if (message === "") {
-//        webSocket.send(message);
-//        id("message").value = "";
-//    }
-//    if (message === "showgames"){
-//        webSocket.send(id("opengames").value);
-//    }
-//}
-
 //Update the chat-panel, and the list of connected users
 function updateChat(msg) {
     var data = JSON.parse(msg.data);
@@ -65,6 +53,12 @@ function updateChat(msg) {
     } else if (typeof data.rolleddice !== "undefined"){        // if not signed up
         console.log("You´ve rolled a " + data.rolleddice);
         id("rolldice").style.display="none";
+
+    } else if (typeof data.turn !== "undefined"){        // if not signed up
+        console.log(data.turn);
+        id("rolldice").style.display="block";
+        id("turn").style.display="block";
+        id("wait").style.display="none";
 
     } else {
         console.log("Message is undefined");

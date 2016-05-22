@@ -54,6 +54,12 @@ function updateChat(msg) {
         console.log("You´ve rolled a " + data.rolleddice);
         id("rolldice").style.display="none";
 
+    } else if (typeof data.turn !== "undefined"){        // if not signed up
+        console.log(data.turn);
+        id("rolldice").style.display="block";
+        id("turn").style.display="block";
+        id("wait").style.display="none";
+
     } else {
         console.log("Message is undefined");
     }
