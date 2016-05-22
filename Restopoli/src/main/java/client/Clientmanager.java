@@ -121,6 +121,69 @@ public class Clientmanager {
         return "";
     }
 
+    private static String getDice(String gameUri){
+        String diceUri = null;
+
+        JSONArray antwort;
+        JSONObject antwortElem;
+
+        try {
+            antwort = Unirest.get(gameUri).asJson().getBody().getArray();
+
+            for(Object jsonEntry : antwort) {
+                antwortElem = (JSONObject)jsonEntry;
+
+                JSONObject components = (JSONObject) antwortElem.get("services");
+                diceUri = (String) components.get("dice") + "/dice";
+            }
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+        return diceUri;
+    }
+
+    private static Client getClient (Session session){
+        for (Client client: _clientList) {
+            if (client.get_session().equals(session)){
+                return client;
+            }
+        }
+        return null;
+    }
+
+    public static void rollDice(Session session) {
+
+        Client client = getClient(session);
+        if (client != null){
+
+            String diceUri = getDice(client.get_gameUrl());
+            if (diceUri != null){
+                System.out.println(diceUri);
+                JSONObject antwort;
+                JSONObject antwortElem;
+
+                try {
+                    antwort = Unirest.get(diceUri).asJson().getBody().getObject();
+                    int number = (Integer) antwort.get("number");
+                    System.out.println(client.get_username() + " has a " + number);
+                    sendIt(session, number+"", "rolleddice");
+                } catch (UnirestException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+
+        }
+    }
+
+    //-----------------------------------SIGN UP------------------------------
+
+    /**
+     *
+     * @param name
+     * @return
+     */
     private static boolean usernameIsAvailable(String name){
         boolean isAvailable = true;
 
@@ -133,9 +196,16 @@ public class Clientmanager {
         return isAvailable;
     }
 
+    /**
+     *
+     * @param session
+     * @param name
+     * @param game
+     */
     static void signupUser(Session session, String name, String game){
         if (usernameIsAvailable(name)){
-            _clientList.add(new Client(nextUserId++, session, name));
+            Client client = new Client(nextUserId++, session, name);
+            _clientList.add(client);
 
             JSONObject player = new JSONObject();
             player.put("user", "/user/"+name);
@@ -145,6 +215,8 @@ public class Clientmanager {
                         .header("Content-Type", "application/json")
                         .body(player)
                         .asString();
+
+                client.set_gameUrl(game);
 
                 sendIt(session, "Hi " + name + ", good Luck for you. I hope you get rich!", "signedup");
             } catch (UnirestException e) {
@@ -189,9 +261,7 @@ public class Clientmanager {
                     }
                 }
             }
-
             sendIt(session, openGameUris.toString(), "games");
-
         } catch (UnirestException e) {
             e.printStackTrace();
         }
@@ -220,12 +290,9 @@ public class Clientmanager {
                     gameIsOpen = true;
                 }
             }
-
-
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-
 
         return gameIsOpen;
     }
@@ -243,23 +310,17 @@ public class Clientmanager {
         try {
             antwort = Unirest.get(gameUri + "/games").asJson().getBody().getArray();
 
-            System.out.println(antwort.toString());
-
             for(Object jsonEntry : antwort) {
                 antwortElem = (JSONObject)jsonEntry;
 
                 JSONArray gamesJson = (JSONArray) antwortElem.get("games");
                 for(Object game : gamesJson){
-                    System.out.println("Found Game: " + game.toString());
                     games.add(gameUri + game.toString());
                 }
             }
-
-
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-
 
         return games;
     }
@@ -277,21 +338,15 @@ public class Clientmanager {
         try {
             antwort = Unirest.get(YELLOW_PAGES + serviceId).asJson().getBody().getArray();
 
-            System.out.println(antwort.toString());
-
             for(Object jsonEntry : antwort) {
                 antwortElem = (JSONObject)jsonEntry;
 
                 gameUri = antwortElem.get("uri").toString();
             }
-
-
         } catch (UnirestException e) {
             e.printStackTrace();
         }
 
         return gameUri;
     }
-
-
 }

@@ -27,9 +27,9 @@ public class ClientWebSocketHandler {
 
     @OnWebSocketMessage
     public void onMessage(Session user, String message) {
-        System.out.println(message);
+        System.out.println("Websocket got a new message :");
 
-        if (message.length() > 3){
+        if (message.length() >= 3){
 
             String code = message.substring(0,3);
             message = message.substring(3,message.length());
@@ -43,6 +43,10 @@ public class ClientWebSocketHandler {
                     String name = message.substring(message.indexOf(',') + 1, message.length());
                     System.out.println(name + " want to play here : " + game);
                     Clientmanager.signupUser(user, name, game);
+                    break;
+                case "101" :
+                    Clientmanager.rollDice(user);
+                    break;
                 default:
                     System.out.println("No Code : " + message);
                     break;

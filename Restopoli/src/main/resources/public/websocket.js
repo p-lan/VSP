@@ -2,16 +2,7 @@
 var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/user/");
 webSocket.onmessage = function (msg) { updateChat(msg); };
 webSocket.onclose = function () { alert("WebSocket connection closed") };
-
-//Send message if "Send" is clicked
-id("send").addEventListener("click", function () {
-    sendMessage(id("message").value);
-});
-
-//Send message if enter is pressed in the input field
-id("message").addEventListener("keypress", function (e) {
-    if (e.keyCode === 13) { sendMessage(e.target.value); }
-});
+id("game").style.display="none";
 
 //Send message if "Send" is clicked
 id("signup").addEventListener("click", function () {
@@ -21,17 +12,13 @@ id("signup").addEventListener("click", function () {
         webSocket.send("001" + id("opengames").value + "," + username);
 });
 
-////Send a message if it's not empty, then clear the input field
-//function sendMessage(message) {
-//    console.log(message);
-//    if (message === "") {
-//        webSocket.send(message);
-//        id("message").value = "";
-//    }
-//    if (message === "showgames"){
-//        webSocket.send(id("opengames").value);
-//    }
-//}
+//Send message if "Send" is clicked
+id("rolldice").addEventListener("click", function () {
+    console.log("button pressed");
+    webSocket.send("101" + "RollDice");
+    id("turn").style.display="none";
+    id("wait").style.display="block";
+});
 
 //Update the chat-panel, and the list of connected users
 function updateChat(msg) {
@@ -56,15 +43,18 @@ function updateChat(msg) {
         }
 
     } else if(typeof data.signedup !== "undefined"){            // if signed up
-        id("name").style.display="none";
-        id("signup").style.display="none";
-        id("opengames").style.display="none";
+        id("signin").style.display="none";
+        id("turn").style.display="none";
+        id("game").style.display="block";
         console.log(data.signedup);
 
     } else if (typeof data.notsignedup !== "undefined"){        // if not signed up
 
-    }
-    else {
+    } else if (typeof data.rolleddice !== "undefined"){        // if not signed up
+        console.log("You´ve rolled a " + data.rolleddice);
+        id("rolldice").style.display="none";
+
+    } else {
         console.log("Message is undefined");
     }
 }

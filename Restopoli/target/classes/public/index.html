@@ -6,18 +6,17 @@
     <!--<link rel="stylesheet" href="style.css">-->
 </head>
 <body>
-<div id="chatControls">
-    <input id="message" placeholder="Type your message">
-    <input id="game" placeholder="Type your message">
-    <button id="send">Send</button>
-</div>
-<div id="signIn">
+<div id="signin">
     <input id="name" placeholder="Type your name">
     <select id="opengames"></select>
-    <button id="signup">Showgames</button>
+    <button id="signup">Sign Up</button>
 </div>
-<ul id="userlist"> <!-- Built by JS --> </ul>
-<div id="chat">    <!-- Built by JS --> </div>
+<div id="game">
+    <a id="turn">It's your turn</a>
+    <a id="wait">Please wait</a>
+    <button id="rolldice">Roll Dice</button>
+</div>
+<ul id="events"> <!-- Built by JS --> </ul>
 <script src="websocket.js"></script>
 </body>
 </html>
