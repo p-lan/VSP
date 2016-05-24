@@ -1,56 +1,33 @@
 package services.bank;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Banken {
 	
 	
-	private Map<String,Bank> zumSpielgehoerigeBanken;
-	
-	private int id=0;
-	
+	private Map<Integer,Bank> banken;
 	
 	public Banken(){
-		
-		this.zumSpielgehoerigeBanken = new HashMap<String,Bank>();
-		
-	}
-	
-	public Map<String,Bank> getAllBanks(){
-		
-		return zumSpielgehoerigeBanken;
-	}
-	
-	public void createBankForGame(String gameID){
-		
-		Bank bank = zumSpielgehoerigeBanken.get(gameID);
-		if(bank == null) {
-			bank = new Bank(String.valueOf(id++));
-			zumSpielgehoerigeBanken.put(gameID, bank);
-		}
-		
+		this.banken = new HashMap<Integer,Bank>();
 		
 	}
 	
-	
-	
-	public void createBank(String gameID, Account player){
-
-		Bank bank = zumSpielgehoerigeBanken.get(gameID);
-		if(bank == null) {
-			bank = new Bank(gameID);
-			zumSpielgehoerigeBanken.put(gameID, bank);
-		}
-		bank.addPlayer(player);	
+	public List<Bank> getBanken(){		
+		return new ArrayList<>(banken.values());
 	}
 	
-	public int getKontostand(String gameID, String playerID){
+	public Bank getBank(int bankID){
 		
-		Bank bank = zumSpielgehoerigeBanken.get(gameID);
-		
-		return bank.getKontostand(playerID);
+		return banken.get(bankID);
 	}
 	
+	public void addBank(int bankid,Bank bank){
+		banken.put(bankid, bank);
+	}
+	
+		
 
 }

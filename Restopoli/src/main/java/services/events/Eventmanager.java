@@ -23,7 +23,7 @@ public class Eventmanager {
     private static final String NAME = "lmnp_events";//"lmnp_events_Norman";
     private static final String DESCRIPTION = "Verwaltet Events";
     private static final String SERVICE = "events";
-    private static final String URI = "/events";
+    private static final String URI = "";
 
     private static final Events EVENTS = new Events();
 
@@ -34,8 +34,6 @@ public class Eventmanager {
         	
     	Event event = new Gson().fromJson(req.body(), Event.class);
     			
-        
-        System.out.println("eventmanager.postEvent2: "+event.getName());
 
         if(event.getGame().isEmpty() && event.getType().isEmpty() 
         							&& event.getName().isEmpty() && event.getReason().isEmpty()){
@@ -43,7 +41,8 @@ public class Eventmanager {
         	return "Eines oder alle ben�tigten Felder (game,type,name oder reason) nicht angegeben!";
         }
         else{
-        	event.setID(String.valueOf(id++));
+        	event.setID(req.pathInfo()+"/"+String.valueOf(id++));
+        	
             EVENTS.addEvent(event);
 
             return "ok";
@@ -59,9 +58,6 @@ public class Eventmanager {
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
 
-        System.out.println("game: " + game);
-        System.out.println("player: " + player);
-
         List<Event> passendeEvents = EVENTS.getEvents(game, type, name, reason, resource, player);
 
         res.status(200);
@@ -76,17 +72,13 @@ public class Eventmanager {
         String resource = req.queryParams("resource");
         String player = req.queryParams("player");
 
-        System.out.println("game: " + game);
-        System.out.println("player: " + player);
-
-       
         EVENTS.delEvent(game, type, name, reason, resource, player);
 
         return "ok";
     }
 
     public static String getEvent(Request req, Response res){
-        String eventid = req.params(":eventid");
+        String eventid = req.pathInfo();
 
         Event event = EVENTS.getEvent(eventid);
 
