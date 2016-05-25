@@ -120,8 +120,8 @@ public class BankService {
     	Transfer trans = theBank.getTransfer(transferID);
     	JSONObject json = new JSONObject();
     	    	
-    	json.put("from", trans.getFrom());
-    	json.put("to", trans.getTo());
+    	json.put("from", trans.getFrom().getAccountID());
+    	json.put("to", trans.getTo().getAccountID());
     	json.put("amount", trans.getAmount());
     	json.put("reason", trans.getReason());
     	
@@ -142,7 +142,7 @@ public class BankService {
     	int amount = Integer.parseInt(req.params(":amount"));
     	
     	String transaction =req.queryParams("transaction");
-    	int transactionID = Integer.parseInt(transaction.substring(transaction.length()-1));
+    	int transactionID = Integer.parseInt(transaction.substring(transaction.lastIndexOf("/")+1));
     	
     	String reason = req.body();
     	
@@ -178,7 +178,7 @@ public class BankService {
     	int amount = Integer.parseInt(req.params(":amount"));
     	
     	String transaction =req.queryParams("transaction");
-    	int transactionID = Integer.parseInt(transaction.substring(transaction.length()-1));
+    	int transactionID = Integer.parseInt(transaction.substring(transaction.lastIndexOf("/")+1));
     	
     	String reason = req.body();
     	
@@ -214,7 +214,7 @@ public class BankService {
     	int amount = Integer.parseInt(req.params(":amount"));
     	
     	String trans =req.queryParams("transaction");
-    	int transactionID = Integer.parseInt(trans.substring(trans.length()-1));
+    	int transactionID = Integer.parseInt(trans.substring(trans.lastIndexOf("/")+1));
     	String reason = req.body();
     	
     	Bank theBank = BANKEN.getBank(bankid);
@@ -273,7 +273,7 @@ public class BankService {
     	JSONObject json = new JSONObject();
     	
     	
-    	json.put("player", trans.getStatus());
+    	json.put("status", trans.getStatus());
     	
     	
     	res.status(HttpStatus.OK_200);

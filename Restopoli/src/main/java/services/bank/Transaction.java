@@ -49,7 +49,7 @@ public class Transaction {
 	public void commit() {
 		if(this.status == Status.ready){
 			for(Transfer t :this.transfers){
-				t.ausfuehren();
+				ausfuehren(t);
 			}
 			this.status = Status.commited;
 		}
@@ -58,14 +58,38 @@ public class Transaction {
 
 	public void rollBack() {
 		if(this.status == Status.commited){
+			
 			for(Transfer t :this.transfers){
-				t.zurueckNehmen();
+				zurueckNehmen(t);
 			}
-			this.status = Status.deleted;
+			
 		}
-		
+		this.status = Status.deleted;
 	}
 	
+	public void ausfuehren(Transfer trans) {
+		Account from = trans.getFrom();
+		Account to= trans.getTo();
+		int amount = trans.getAmount();
+		
+		int newSaldoFrom = from.getSaldo()-amount;
+		int newSaldoTo = to.getSaldo()+amount;
+		
+		from.setSaldo(newSaldoFrom);
+		to.setSaldo(newSaldoTo);
+	}
+
+	public void zurueckNehmen(Transfer trans) {
+		Account from = trans.getFrom();
+		Account to= trans.getTo();
+		int amount = trans.getAmount();
+		
+		int newSaldoFrom = from.getSaldo()+amount;
+		int newSaldoTo = to.getSaldo()-amount;
+		
+		from.setSaldo(newSaldoFrom);
+		to.setSaldo(newSaldoTo);
+	}
 
 	
 	

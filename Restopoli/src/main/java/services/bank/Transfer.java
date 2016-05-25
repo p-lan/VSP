@@ -37,29 +37,6 @@ public class Transfer {
 
 	public String getReason() {
 		return reason;
-	}
-
-	public void ausfuehren() {
-		int alterSaldoFrom = this.from.getSaldo();
-		int alterSaldoTo = this.to.getSaldo();
-		
-		int newSaldoFrom = alterSaldoFrom-this.amount;
-		int newSaldoTo = alterSaldoTo+this.amount;
-		
-		this.from.setSaldo(newSaldoFrom);
-		this.to.setSaldo(newSaldoTo);
-	}
-
-	public void zurueckNehmen() {
-		int alterSaldoFrom = this.from.getSaldo();
-		int alterSaldoTo = this.to.getSaldo();
-		
-		int newSaldoFrom = alterSaldoFrom+this.amount;
-		int newSaldoTo = alterSaldoTo-this.amount;
-		
-		this.from.setSaldo(newSaldoFrom);
-		this.to.setSaldo(newSaldoTo);
-	}
-	
+	}	
 	
 }
