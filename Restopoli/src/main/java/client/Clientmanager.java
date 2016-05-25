@@ -32,7 +32,7 @@ public class Clientmanager {
 
     public static void main(String[] args) {
 
-        Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
+//        Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
 
         nextUserId = 0;
 
@@ -129,23 +129,23 @@ public class Clientmanager {
 
     /**
      * Such die Dice-URI zum game
-     * @param gameUri die GameURI
+     * @param client Der client der wuerfeln moechte
      * @return die DiceURI
      */
-    private static String getDice(String gameUri){
+    private static String getDice(Client client){
         String diceUri = null;
 
         JSONArray antwort;
         JSONObject antwortElem;
 
         try {
-            antwort = Unirest.get(gameUri).asJson().getBody().getArray();
+            antwort = Unirest.get(client.get_gameUrl()).asJson().getBody().getArray();
 
             for(Object jsonEntry : antwort) {
                 antwortElem = (JSONObject)jsonEntry;
 
                 JSONObject components = (JSONObject) antwortElem.get("services");
-                diceUri = (String) components.get("dice") + "/dice";
+                diceUri = components.get("board") + "/boards/" + client.get_gameId() + "/pawns/" + client.get_pawnId() + "/roll";
             }
         } catch (UnirestException e) {
             e.printStackTrace();
@@ -177,17 +177,17 @@ public class Clientmanager {
         Client client = getClient(session);
         if (client != null){
 
-            String diceUri = getDice(client.get_gameUrl());
-            if (diceUri != null){
-                System.out.println(diceUri);
+            String rollUri = getDice(client);
+            if (rollUri != null){
+                System.out.println(client.get_username() +" wants to roll here : "+ rollUri);
                 JSONObject antwort;
-                JSONObject antwortElem;
 
                 try {
-                    antwort = Unirest.get(diceUri).asJson().getBody().getObject();
-                    int number = (Integer) antwort.get("number");
-                    System.out.println(client.get_username() + " has a " + number);
-                    sendIt(session, number+"", "rolleddice");
+                    antwort = Unirest.post(rollUri).asJson().getBody().getObject();
+                    System.out.println(antwort);
+//                    int number = (Integer) antwort.get("number");
+//                    System.out.println(client.get_username() + " has a " + number);
+                    sendIt(session, "ähh keine Ahnung...", "rolleddice");
                 } catch (UnirestException e) {
                     e.printStackTrace();
                 }
@@ -237,6 +237,8 @@ public class Clientmanager {
                         .asString();
 
                 client.set_gameUrl(game);
+                client.set_gameId(game.split("/")[game.split("/").length-1]);
+                client.set_pawnId(res.getHeaders().getFirst("Location").split("/")[res.getHeaders().getFirst("Location").split("/").length-1]);
 
                 sendIt(session, "Hi " + name + ", good Luck for you. I hope you get rich!", "signedup");
             } catch (UnirestException e) {

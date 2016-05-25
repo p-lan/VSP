@@ -12,6 +12,8 @@ public class Client {
     private String _gameUrl;
     private String _userUrl;
     private Session _session;
+    private String _gameId;
+    private String _pawnId;
 
     /**
      * Constructor
@@ -67,4 +69,19 @@ public class Client {
         this._gameUrl = _gameUrl;
     }
 
+    public void set_gameId(String _gameId) {
+        this._gameId = _gameId;
+    }
+
+    public String get_gameId() {
+        return _gameId;
+    }
+
+    public String get_pawnId() {
+        return _pawnId;
+    }
+
+    public void set_pawnId(String _pawnId) {
+        this._pawnId = _pawnId;
+    }
 }
