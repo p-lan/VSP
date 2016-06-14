@@ -17,3 +17,17 @@
 "uri":http://localhost:1234/nix,
 "event":{"game":blub1}
 }
+
+### subscription die auf events mit dem name me reagiert
+{
+"game":first,
+"uri":http://localhost:1234/nix,
+"event":{"name":me}
+}
+
+### subscription die auf events mit dem game blub und name me reagiert
+{
+"game":first,
+"uri":http://localhost:1234/nix,
+"event":{"game":blub,"name":me}
+}
