@@ -1,22 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WebsSockets</title>
-    <!--<link rel="stylesheet" href="style.css">-->
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
-<div id="signin">
-    <input id="name" placeholder="Type your name">
-    <select id="opengames"></select>
-    <button id="signup">Sign Up</button>
+<div class="col-xs-4 col-xs-offset-4">
+        <div class="panel panel-primary" id="signin">
+            <div class="panel-heading">
+                <div class="text-center">Join to a game</div>
+            </div></br>
+            <div class="panel-body">
+                <input class="form-control"  id="name" placeholder="Type your name"></br>
+                <select class="form-control" id="opengames"></select></br>
+                <button class="btn btn-primary btn-lg btn-block"  id="signup">Sign Up</button></br>
+            </div>
+        </div>
+        <div class="panel panel-info" id="newgame">
+            <div class="panel-heading">
+                <div class="text-center">New game</div>
+            </div> </br>
+            <div class="panel-body">
+                <input class="form-control"  id="gamename" placeholder="Type your name"></br>
+                <select class="form-control" id="dices"></select></br>
+                <button class="btn btn-info btn-lg btn-block"  id="newgamebutton">New Game</button></br>
+            </div>
+        </div>
 </div>
+
 <div id="game">
-    <a id="turn">It's your turn</a>
-    <a id="wait">Please wait</a>
-    <button id="rolldice">Roll Dice</button>
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading" id="turn">
+                    <div class="text-center">
+                        It's your turn
+                    </div>
+                </div>
+                <div class="panel-heading" id="wait">
+                    <div class="text-center">
+                        Please wait
+                    </div>
+                </div>
+                <div class="panel-body"></br>
+                    <button class="btn btn-primary btn-lg btn-block"  id="rolldice">Roll Dice</button></br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-primary" id="player">
+                <div class="panel-heading">
+                    <div class="text-center">
+                        Player
+                    </div>
+                </div>
+                <div class="panel-body"></br>
+                    <table class="table" id="playertable">
+                        <tr>
+                            <th>Name</th>
+                            <td><div id="playername"></div></td>
+                        </tr>
+                        <tr>
+                            <th>Saldo</th>
+                            <td><div id="playersaldo"></div></td>
+                        </tr>
+                        <tr>
+                            <th>Place</th>
+                            <td><div id="playerplace"></div></td>
+                        </tr>
+                        <tr>
+                            <th>Last throw</th>
+                            <td><div id="playerlastthrow"></div></td>
+                        </tr>
+                    </table></br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-primary" id="events">
+                <div class="panel-heading">
+                    <div class="text-center">
+                        Events
+                    </div>
+                </div>
+                <div class="panel-body"></br>
+                    <table class="table" id="table">
+                        <tr>
+                            <th>ID</th>
+                            <th>TYPE</th>
+                            <th>NAME</th>
+                            <th>REASON</th>
+                            <th>RESOURCE</th>
+                            <th>PLAYER</th>
+                        </tr>
+                    </table></br>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<ul id="events"> <!-- Built by JS --> </ul>
 <script src="websocket.js"></script>
 </body>
 </html>

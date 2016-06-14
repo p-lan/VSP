@@ -15,6 +15,10 @@ public class Client {
     private String _gameId;
     private String _pawnId;
 
+    private String _bankaccountId;
+
+    private String _boardId;
+
     /**
      * Constructor
      * @param id zur Verwaltung im Clientmanager
@@ -28,6 +32,14 @@ public class Client {
 
     // ---- Getter und Setter ---- //
 
+
+    public String get_bankaccountId() { return _bankaccountId; }
+
+    public void set_bankaccountId(String _bankaccountId) { this._bankaccountId = _bankaccountId; }
+
+    public String get_boardId() { return _boardId; }
+
+    public void set_boardId(String _boardId) { this._boardId = _boardId; }
 
     public Session get_session() {
         return _session;

@@ -44,7 +44,7 @@ public class Registration {
 
     	try {
     		ip = InetAddress.getLocalHost();
-    		fullUri= "http://"+ip.getHostAddress()+":4567"+uri;
+    		fullUri= "http://"+ip.getHostAddress()+":4567";
     		HttpResponse<String> res = Unirest.post(YELLOW_PAGES)
 	                .header("Content-Type", "application/json")
 	                .body(createBody(name, description, service, fullUri))
@@ -104,8 +104,8 @@ public class Registration {
     	System.out.println("Test get List of Services");
     	
     	
-    	//durch läuft die Antwort um sie in eine Liste zu speichern 
-    	// und ueberflüssige zeichen zu löschen
+    	//durch lï¿½uft die Antwort um sie in eine Liste zu speichern 
+    	// und ueberflï¿½ssige zeichen zu lï¿½schen
     	
     	 for(Object jsonEntry : antwort) {
     		 antwortElem = (JSONObject)jsonEntry;

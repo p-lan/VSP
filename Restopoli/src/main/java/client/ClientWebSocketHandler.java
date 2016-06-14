@@ -17,6 +17,7 @@ public class ClientWebSocketHandler {
         //Client client = new Client(Clientmanager.getNextUserId());
         //Clientmanager.addToClientMap(user, client);
         Clientmanager.getGames(user);
+        Clientmanager.getDiceServices(user);
         //Clientmanager.sendIt(user, "Hello User! Your id is : " + client.get_id(), "have fun!");
     }
 
@@ -43,6 +44,12 @@ public class ClientWebSocketHandler {
                     String name = message.substring(message.indexOf(',') + 1, message.length());
                     System.out.println(name + " want to play here : " + game);
                     Clientmanager.signupUser(user, name, game);
+                    break;
+                case "002" :
+                    String dice = message.substring(0, message.indexOf(','));
+                    String gamename = message.substring(message.indexOf(',') + 1, message.length());
+                    System.out.println("Post a new game");
+                    Clientmanager.postGame(user, gamename, dice);
                     break;
                 case "101" :
                     Clientmanager.rollDice(user);
