@@ -1,0 +1,19 @@
+### normales event
+{"game": blub,
+"type": test,
+"name":me,
+"reason":test}
+
+### subscription die auf events mit dem game blub reagiert
+{
+"game":first,
+"uri":http://localhost:1234/nix,
+"event":{"game":blub}
+}
+
+### subscription die auf events mit dem game blub1 reagiert
+{
+"game":first,
+"uri":http://localhost:1234/nix,
+"event":{"game":blub1}
+}

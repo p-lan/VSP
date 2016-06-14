@@ -1,5 +1,7 @@
 package services.events;
 
+import java.util.regex.Pattern;
+
 public class Event {
 
     private String id;
@@ -21,7 +23,22 @@ public class Event {
         this.player = player;
         this.time = time;
     }
-
+    
+    public boolean match(Event regexEvent){
+    	return (
+    			this.game == null || Pattern.matches(this.game, regexEvent.getGame()))
+                && (this.type == null || Pattern.matches(this.type, regexEvent.getType()))
+                && (this.name == null || Pattern.matches(this.name, regexEvent.getName()))
+                && (this.reason == null || Pattern.matches(this.reason, regexEvent.getReason()))
+                && (this.resource == null || Pattern.matches(this.resource, regexEvent.getResource()))
+                && (this.player == null || Pattern.matches(this.player, regexEvent.getPlayer())
+                );		
+    }
+    
+    
+    
+    
+    
     public String getId() {
         return id;
     }
@@ -57,4 +74,10 @@ public class Event {
     	this.id=id;
     }
 
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", game=" + game + ", type=" + type + ", name=" + name + ", reason=" + reason
+				+ ", resource=" + resource + ", player=" + player + ", time=" + time + "]";
+	}
+    
 }

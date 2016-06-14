@@ -391,6 +391,12 @@ public class BankService {
         //isAlive
         get("/", BankService::isAlive);
         
+        
+        // bei transfer wenn keine transaction angegeben 
+        //wird einfach eine (temproräre) erstellen und durchführen!
+        
+        
+        
         // banken erstellen oder anzeigen
         get("/banks", BankService::getBanken); 
         post("/banks", BankService::postBanken);
