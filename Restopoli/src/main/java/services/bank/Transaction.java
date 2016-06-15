@@ -77,6 +77,10 @@ public class Transaction {
 		
 		from.setSaldo(newSaldoFrom);
 		to.setSaldo(newSaldoTo);
+		
+		
+		
+		
 	}
 
 	public void zurueckNehmen(Transfer trans) {

@@ -31,3 +31,12 @@
 "uri":http://localhost:1234/nix,
 "event":{"game":blub,"name":me}
 }
+
+
+### subscription die auf events mit dem game /games/2 reagiert
+{
+"game":'/games/2',
+"uri":'http://172.18.0.56:4567/client/event',
+"event":{"game":/games/2}
+}
+

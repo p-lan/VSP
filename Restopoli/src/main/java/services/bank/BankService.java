@@ -1,12 +1,15 @@
 package services.bank;
 
-import com.google.gson.Gson;
+
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
 
 import spark.Request;
 import spark.Response;
+import util.GetServiceURI;
 import util.Registration;
 
-import java.util.List;
 
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
@@ -292,7 +295,36 @@ public class BankService {
     	Transaction trans = theBank.getTransaction(transID);
     	
     	trans.commit();
- 	
+    	
+    	GetServiceURI eventService = new GetServiceURI("lmnp_events");
+    	
+    	//holt alle ausgeführten transfers
+    	for(Transfer transfer : trans.getTransfers()){
+    		
+    		JSONObject event = new JSONObject();
+    		
+    		event.put("game", theBank.getGame());
+    		event.put("type", "/banks");
+    		event.put("name", "Pay: "+req.pathInfo());
+    		event.put("reason", "Pay: "+transfer.getReason());
+
+        		new Thread(() -> {
+	            		try {
+	            			String hm = eventService.getUriOfTheService();
+	            			System.out.println("event_uri: "+hm);
+	            			
+							Unirest.post(hm)
+							.header(HttpHeader.CONTENT_TYPE.asString(), "appliction/json")
+							.body(event)
+							.asString();
+						} catch (UnirestException e) {
+							
+							System.out.println("EventService konnte nicht kontaktiert werden");
+						}
+        		}).start();
+        	
+        }
+      	
     	
 		res.status(HttpStatus.ACCEPTED_202);
     	return "Transaktion: "+trans.getId()+ " wurde ausgeführt!";
@@ -312,8 +344,34 @@ public class BankService {
     	
     	trans.rollBack();
     	
+GetServiceURI eventService = new GetServiceURI("lmnp_events");
+    	
+    	//holt alle ausgeführten transfers
+    	for(Transfer transfer : trans.getTransfers()){
+    		
+    		JSONObject event = new JSONObject();
+    		
+    		event.put("game", theBank.getGame());
+    		event.put("type", "/banks");
+    		event.put("name", "rollBack: "+req.pathInfo());
+    		event.put("reason", "rollBack: "+transfer.getReason());
+
+        		new Thread(() -> {
+	            		try {
+							Unirest.post(eventService.getUriOfTheService())
+							.header(HttpHeader.CONTENT_TYPE.asString(), "appliction/json")
+							.body(event)
+							.asString();
+						} catch (UnirestException e) {
+							
+							System.out.println("EventService konnte nicht kontaktiert werden");
+						}
+        		}).start();
+        	
+        }
+    	
     	theBank.delTransaction(transID);
-    	    	
+    		
     	res.status(HttpStatus.ACCEPTED_202);
     	return "Transaktion: "+trans.getId()+ " wurde abgebrochen!";
     }

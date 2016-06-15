@@ -24,7 +24,7 @@ public class Eventmanager {
 
     private static final String NAME = "lmnp_events";//"lmnp_events_Norman";
     private static final String DESCRIPTION = "Verwaltet Events";
-    private static final String SERVICE = "events";
+    private static final String SERVICE = "/events";
     private static final String URI = "";
 
     private static final Events EVENTS = new Events();
@@ -88,9 +88,21 @@ public class Eventmanager {
         String player = req.queryParams("player");
 
         List<Event> passendeEvents = EVENTS.getEvents(game, type, name, reason, resource, player);
-
+        
+        JSONArray events = new JSONArray();
+    	JSONObject json = new JSONObject();
+    	
+    	
+    	json.put("subscriptions", "/events/subscriptions");
+    	
+    	for(Event eve : passendeEvents) {
+    		events.put(eve);
+		}
+		
+		json.put("events", events);
+		
         res.status(HttpStatus.OK_200);
-        return new Gson().toJson(passendeEvents);
+        return json.toString();
     }
 
     public static String deleteEvent(Request req, Response res){
@@ -119,14 +131,14 @@ public class Eventmanager {
     
     //##################### Subscription #####################
     
-    public static String getSubscriptions(Request req, Response res){
+    public static String getSubscriptions(Request req, Response res){ 	
     	JSONArray subscriptions = new JSONArray();
-		
+    	JSONObject json = new JSONObject();
+    	
     	for(Subscription sub : EVENTS.getSubscriptions()) {
     		subscriptions.put(sub.getId());
 		}
 		
-		JSONObject json = new JSONObject();
 		json.put("subscriptions", subscriptions);
 		
 		res.status(HttpStatus.OK_200);
@@ -161,8 +173,9 @@ public class Eventmanager {
 		
 		Subscription sub = new Subscription(subID,req.pathInfo()+"/"+String.valueOf(subID), 
 											game, interrestetUri, regexEvent);
-		
+				
 		EVENTS.addSubscription(subID, sub);
+		
     	
 		res.header(HttpHeader.LOCATION.asString(), sub.getId());
 		res.status(HttpStatus.CREATED_201);
@@ -172,7 +185,7 @@ public class Eventmanager {
     
     public static String deleteSubscription(Request req, Response res){
     	
-    	int subscriptionID = Integer.parseInt(req.params(":bankid"));
+    	int subscriptionID = Integer.parseInt(req.params(":subscriptionid"));
     	
     	Subscription sub = EVENTS.getSubscription(subscriptionID);
     	
@@ -193,15 +206,14 @@ public class Eventmanager {
     	//exception handling über Spark exception handling
     	
         Registration.registriereService(NAME, DESCRIPTION, SERVICE, URI);
+    	get("/events/subscriptions", Eventmanager::getSubscriptions);
     	get("/", Eventmanager::isAlive);
     	get("/events", Eventmanager::getEvents);
     	get("/events/:eventid", Eventmanager::getEvent);
     	post("/events", Eventmanager::postEvent);
+    	post("/events/subscriptions", Eventmanager::postSubscription);
         delete("/events", Eventmanager::deleteEvent);
-        //subcriptions
-        get("/events/subscriptions", Eventmanager::getSubscriptions);
-        post("/events/subscriptions", Eventmanager::postSubscription);
-        delete("/events/subscriptions/subscriptions/subscriptionid", Eventmanager::deleteSubscription);
+        delete("/events/subscriptions/subscriptions/:subscriptionid", Eventmanager::deleteSubscription);
         
     }
 }
