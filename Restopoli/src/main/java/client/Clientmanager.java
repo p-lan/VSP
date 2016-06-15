@@ -77,16 +77,18 @@ public class Clientmanager {
      */
     private static String postEvent(Request request, Response response) {
 
+        System.out.println("Got a new event!");
+
         Event event = new Gson().fromJson(request.body(), Event.class);
+        System.out.println(event.getGame() + " , " + event.getPlayer());
 
         for (Client c : _clientList){
-            System.out.println(c.get_boardId());
             if (Pattern.matches(c.get_boardId(), event.getGame())){
                 sendIt(c.get_session(), event, "event");
                 if (Pattern.matches(event.getType(), "dice")){
                     if (Pattern.matches(c.get_pawnId(), event.getPlayer())){
                         //TODO geworfene Zahl statt id versenden
-                        sendIt(c.get_session(), event.getId(), "yourdice");
+                        sendIt(c.get_session(), event.getName(), "yourdice");
                     }
                 }
             }
@@ -210,6 +212,13 @@ public class Clientmanager {
 
             sendIt(getClient(name).get_session(), saldo, "saldo");
 
+            String boardUri = services.getString("board") + getClient(name).get_pawnId();
+            JSONObject pawn = Unirest.get(boardUri).asJson().getBody().getObject();
+            String[] placesplitt = pawn.getString("place").split("/");
+
+            sendIt(getClient(name).get_session(), placesplitt[placesplitt.length-1], "place");
+
+
         } catch (UnirestException e) {
             e.printStackTrace();
         }
@@ -256,8 +265,9 @@ public class Clientmanager {
 
                 JSONObject services = (JSONObject) antwortElem.get("services");
 
-                //TODO String-Konkatenation!!
-                diceUri = services.get("board") + client.get_pawnId() + "/roll";
+                String pawnUri = services.get("board") + client.get_pawnId();
+                JSONObject pawn = Unirest.get(pawnUri).asJson().getBody().getObject();
+                diceUri = services.get("board") + pawn.getString("roll");
             }
         } catch (UnirestException e) {
             e.printStackTrace();
@@ -419,14 +429,17 @@ public class Clientmanager {
         JSONObject event = new JSONObject();
         event.put("player", pawnId);
         json.put("game", "default");
-        json.put("uri", ip.getHostAddress());
+        json.put("uri", "http://"+ip.getHostAddress()+":4567/client/event");
         json.put("event", event);
 
         try {
             JSONArray eventsservices = (JSONArray) Unirest.get(YELLOW_PAGES + "/services/of/name/lmnp_events").asJson().getBody().getObject().get("services");
             JSONObject events = Unirest.get(YELLOW_PAGES + eventsservices.get(0)).asJson().getBody().getObject();
-            //TODO String-Konkatenation
-            HttpResponse<String> res = Unirest.post(events.getString("uri") + events.getString("service") + "/subscribe")
+
+            JSONObject getevents = Unirest.get(events.getString("uri") + events.getString("service")).asJson().getBody().getObject();
+            System.out.println("Subscribe here: "+ events.getString("uri") + events.getString("service") + getevents.getString("subscriptions"));
+            System.out.println("with: " + json.toString());
+            HttpResponse<String> res = Unirest.post(events.getString("uri") + events.getString("service") + getevents.getString("subscriptions"))
                     .header("Content-Type", "application/json")
                     .body(json)
                     .asString();

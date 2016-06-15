@@ -120,6 +120,12 @@ function updateChat(msg) {
         var saldofield = document.getElementById('playersaldo');
         saldofield.appendChild(document.createTextNode(data.saldo));
 
+    } else if (typeof data.place !== "undefined"){        // if get saldo
+
+         console.log("You#re place is " + data.place);
+         var placefield = document.getElementById('playerplace');
+         placefield.appendChild(document.createTextNode(data.place));
+
     } else if (typeof data.rolleddice !== "undefined"){        // if not signed up
 
         id("rolldice").disabled = true;
