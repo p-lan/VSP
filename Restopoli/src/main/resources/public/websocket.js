@@ -3,6 +3,10 @@ var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port 
 webSocket.onmessage = function (msg) { updateChat(msg); };
 webSocket.onclose = function () { alert("WebSocket connection closed") };
 id("game").style.display="none";
+id("waitforready").style.display="none";
+id("rolldice").disabled = true;
+id("turn").style.display="none";
+id("buy").style.display="none";
 
 //Send message if "signup" is clicked
 id("signup").addEventListener("click", function () {
@@ -10,6 +14,13 @@ id("signup").addEventListener("click", function () {
     username = id("name").value.trim();
     if (username.length > 2 && username.length < 20)
         webSocket.send("001" + id("opengames").value + "," + username);
+});
+
+//Send message if "ready" is clicked
+id("readybutton").addEventListener("click", function () {
+    console.log("ready pressed");
+    if (username.length > 2 && username.length < 20)
+        webSocket.send("010");
 });
 
 //Send message if "newgamebutton" is clicked
@@ -20,12 +31,18 @@ id("newgamebutton").addEventListener("click", function () {
         webSocket.send("002" + id("dices").value + "," + gamename);
 });
 
-//Send message if "rolldice" is clicked
-id("rolldice").addEventListener("click", function () {
-    console.log("button pressed");
-    webSocket.send("101" + "RollDice");
-    id("turn").style.display="none";
-    id("wait").style.display="block";
+//Send message if "buybutton" is clicked
+id("buybutton").addEventListener("click", function () {
+    console.log("buy pressed");
+    webSocket.send("301" + "buy");
+    id("buy").style.display="none";
+});
+
+//Send message if "dontbuybutton" is clicked
+id("dontbuybutton").addEventListener("click", function () {
+    console.log("dont buy pressed");
+    webSocket.send("301" + "dontbuy");
+    id("buy").style.display="none";
 });
 
 //Update the chat-panel, and the list of connected users
@@ -94,19 +111,31 @@ function updateChat(msg) {
              tr.appendChild(tdPlayer);
              table.appendChild(tr);
 
-         } else if(typeof data.signedup !== "undefined"){            // if signed up
+    } else if(typeof data.signedup !== "undefined"){            // if signed up
 
         id("signin").style.display="none";
         id("newgame").style.display="none";
-        id("turn").style.display="none";
-        id("game").style.display="block";
-        id("rolldice").style.display="block";
-        id("rolldice").disabled = true;
-        var namefield = document.getElementById('playername');
-        namefield.appendChild(document.createTextNode(data.signedup));
+        id("waitforready").style.display="block";
         console.log("Hello "+data.signedup+", you are logged in!");
 
+    } else if(typeof data.startgame !== "undefined"){            // if game start
+
+        id("waitforready").style.display="none";
+        id("game").style.display="block";
+        id("rolldice").style.display="block";
+        var namefield = document.getElementById('playername');
+        namefield.appendChild(document.createTextNode(data.startgame));
+        console.log("Es geht los "+data.startgame+"!");
+
     } else if (typeof data.notsignedup !== "undefined"){        // if not signed up
+
+    } else if (typeof data.buy !== "undefined"){        // if buy
+
+        console.log("buy street for " + data.buy);
+        id("buy").style.display="block";
+        var streetfield = document.getElementById('buy');
+        streetfield.appendChild(document.createTextNode(data.buy));
+
 
     } else if (typeof data.yourdice !== "undefined"){        // if get a dice
 

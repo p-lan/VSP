@@ -45,6 +45,10 @@ public class ClientWebSocketHandler {
                     System.out.println(name + " want to play here : " + game);
                     Clientmanager.signupUser(user, name, game);
                     break;
+                case "010" :
+                    System.out.println("player is ready");
+                    Clientmanager.sayReady(user);
+                    break;
                 case "002" :
                     String dice = message.substring(0, message.indexOf(','));
                     String gamename = message.substring(message.indexOf(',') + 1, message.length());
@@ -53,6 +57,18 @@ public class ClientWebSocketHandler {
                     break;
                 case "101" :
                     Clientmanager.rollDice(user);
+                    break;
+                case "301" :
+                    if (message.equals("buy")){
+                        System.out.println("player want buy");
+                        Clientmanager.buy(user);
+                    } else if (message.equals("dontbuy")){
+                        System.out.println("player dont wanna buy");
+                        Clientmanager.sayReady(user);
+                    } else {
+                        System.out.println("something went wrong buy");
+                        Clientmanager.sayReady(user);
+                    }
                     break;
                 default:
                     System.out.println("No Code : " + message);

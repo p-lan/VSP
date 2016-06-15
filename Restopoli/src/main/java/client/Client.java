@@ -13,6 +13,10 @@ public class Client {
     private String _userUrl;
     private Session _session;
     private String _gameId;
+
+    private String _playerID;
+
+    private String _readyId;
     private String _pawnId;
 
     private String _bankaccountId;
@@ -32,6 +36,22 @@ public class Client {
 
     // ---- Getter und Setter ---- //
 
+
+    public String get_playerID() {
+        return _playerID;
+    }
+
+    public void set_playerID(String _playerID) {
+        this._playerID = _playerID;
+    }
+
+    public String get_readyId() {
+        return _readyId;
+    }
+
+    public void set_readyId(String _readyId) {
+        this._readyId = _readyId;
+    }
 
     public String get_bankaccountId() { return _bankaccountId; }
 

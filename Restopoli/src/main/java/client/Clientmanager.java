@@ -199,9 +199,9 @@ public class Clientmanager {
      */
     private static String setTurn(Request request, Response response) {
 
-        String player = new JSONObject(request.body()).get("player").toString();
-        String[] playersplit = player.split("/");
-        String name = playersplit[playersplit.length-1];
+        String name = new JSONObject(request.body()).get("player").toString();
+        System.out.println("POST Turn for: " + name);
+        System.out.println("want call "+getClient(name).get_gameUrl());
 
         try {
             JSONObject game = Unirest.get(getClient(name).get_gameUrl()).asJson().getBody().getObject();
@@ -211,12 +211,6 @@ public class Clientmanager {
             String saldo = account.get("saldo")+"";
 
             sendIt(getClient(name).get_session(), saldo, "saldo");
-
-            String boardUri = services.getString("board") + getClient(name).get_pawnId();
-            JSONObject pawn = Unirest.get(boardUri).asJson().getBody().getObject();
-            String[] placesplitt = pawn.getString("place").split("/");
-
-            sendIt(getClient(name).get_session(), placesplitt[placesplitt.length-1], "place");
 
 
         } catch (UnirestException e) {
@@ -232,12 +226,12 @@ public class Clientmanager {
 
     /**
      * suche mir den passenden Client zum Namen
-     * @param name der Name
+     * @param playerId der Name
      * @return der Client
      */
-    private static Client getClient (String name){
+    private static Client getClient (String playerId){
         for (Client client: _clientList) {
-            if (client.get_username().equals(name)){
+            if (client.get_playerID().equals(playerId)){
                 return client;
             }
         }
@@ -309,17 +303,25 @@ public class Clientmanager {
                             .header("Content-Type", "application/json")
                             .asString();
 
-//                    JsonNode antwortNode = Unirest.post(rollUri).asJson().getBody();
-//                    JSONObject antwort = antwortNode.getObject();
+                    JSONObject game = Unirest.get(client.get_gameUrl()).asJson().getBody().getObject();
+                    JSONObject gameservices = game.getJSONObject("services");
 
-                    //TODO Hier muessen Events ankommen und an client uebergeben werden!!
-//                    System.out.println("Events... " + antwort.toString());
-//                    sendIt(session, antwort.toString(), "rolleddice");
-//
-//                    JSONArray rolls = (JSONArray) Unirest.get(rollUri).asJson().getBody().getObject().get("throws");
-//                    System.out.println("rolls: " + rolls);
-//                    String a = rolls.get(rolls.length()-1).toString();
-//                    System.out.println("letzer roll: " + a);
+                    JSONObject pawn = Unirest.get(gameservices.getString("board") + client.get_pawnId()).asJson().getBody().getObject();
+
+                    sendIt(client.get_session(), pawn.get("position")+"", "place");
+
+                    JSONObject place = Unirest.get(gameservices.getString("board") + pawn.getString("place")).asJson().getBody().getObject();
+
+                    JSONObject broker = Unirest.get(gameservices.getString("board") + place.getString("broker")).asJson().getBody().getObject();
+
+                    JSONObject owner = Unirest.get(gameservices.getString("board") + broker.getString("owner")).asJson().getBody().getObject();
+
+                    System.out.println("Owner" + owner);
+
+                    if (owner == null){
+                        sendIt(client.get_session(), owner.getString("cost").toString(), "buy");
+                    }
+
                 } catch (UnirestException e) {
                     e.printStackTrace();
                 }
@@ -329,7 +331,41 @@ public class Clientmanager {
         }
     }
 
-    //-----------------------------------SIGN UP------------------------------
+
+    //-----------------------------------BUY------------------------------
+
+    /**
+     *
+     * @param user
+     */
+    public static void buy(Session user) {
+        Client client = getClient(user);
+
+        JSONObject game = null;
+        try {
+            game = Unirest.get(client.get_gameUrl()).asJson().getBody().getObject();
+
+            JSONObject gameservices = game.getJSONObject("services");
+
+            JSONObject pawn = Unirest.get(gameservices.getString("board") + client.get_pawnId()).asJson().getBody().getObject();
+
+            sendIt(client.get_session(), pawn.get("position")+"", "place");
+
+            JSONObject place = Unirest.get(gameservices.getString("board") + pawn.getString("place")).asJson().getBody().getObject();
+
+            JSONObject broker = Unirest.get(gameservices.getString("board") + place.getString("broker")).asJson().getBody().getObject();
+
+            HttpResponse<String> res = Unirest.post(gameservices.getString("board") + broker.getString("owner"))
+                    .header("Content-Type", "application/json")
+                    .body(client.get_playerID())
+                    .asString();
+
+            sayReady(user);
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     /**
      * Pruefe ob der Username schon vergeben ist
@@ -389,16 +425,11 @@ public class Clientmanager {
                 client.set_boardId(gameComponents.getString("board"));
                 System.out.println("save board: "+gameComponents.getString("board"));
 
-                String PlayerReadyUri = gameSevices.get("game") + "" + playerx.get("ready");
-                System.out.println("say ready to : "+PlayerReadyUri);
-                HttpResponse<String> ready = Unirest.put(PlayerReadyUri).asString();
-                //TODO Bitte loescht uns
-                HttpResponse<String> ready1 = Unirest.put(PlayerReadyUri).asString();
-                HttpResponse<String> ready2 = Unirest.put(PlayerReadyUri).asString();
-
                 client.set_gameId(game.split("/")[game.split("/").length-1]);
                 client.set_pawnId(playerx.get("pawn").toString());
                 client.set_bankaccountId(playerx.get("account").toString());
+                client.set_readyId(playerx.getString("ready"));
+                client.set_playerID(playerx.getString("id"));
 
                 System.out.println("PawnId : " + client.get_pawnId());
 
@@ -437,9 +468,9 @@ public class Clientmanager {
             JSONObject events = Unirest.get(YELLOW_PAGES + eventsservices.get(0)).asJson().getBody().getObject();
 
             JSONObject getevents = Unirest.get(events.getString("uri") + events.getString("service")).asJson().getBody().getObject();
-            System.out.println("Subscribe here: "+ events.getString("uri") + events.getString("service") + getevents.getString("subscriptions"));
+            System.out.println("Subscribe here: "+ events.getString("uri") + getevents.getString("subscriptions"));
             System.out.println("with: " + json.toString());
-            HttpResponse<String> res = Unirest.post(events.getString("uri") + events.getString("service") + getevents.getString("subscriptions"))
+            HttpResponse<String> res = Unirest.post(events.getString("uri") + getevents.getString("subscriptions"))
                     .header("Content-Type", "application/json")
                     .body(json)
                     .asString();
@@ -447,6 +478,38 @@ public class Clientmanager {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
+
+    }
+
+    //-----------------------------------READY------------------------------
+
+    /**
+     *
+     * @param user
+     */
+    public static void sayReady(Session user) {
+
+        Client client = null;
+
+        for (Client c : _clientList){
+            if (c.get_session().equals(user)){
+                client = c;
+            }
+        }
+        try {
+            JSONArray gameservices = (JSONArray) Unirest.get(YELLOW_PAGES + "/services/of/name/lmnp_games").asJson().getBody().getObject().get("services");
+            JSONObject game = Unirest.get(YELLOW_PAGES + gameservices.get(0)).asJson().getBody().getObject();
+
+            String PlayerReadyUri = game.getString("uri") + client.get_readyId();
+            System.out.println("say ready to : "+PlayerReadyUri);
+            HttpResponse<String> ready = Unirest.put(PlayerReadyUri).asString();
+
+            sendIt(user, "startgame", "startgame");
+
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
