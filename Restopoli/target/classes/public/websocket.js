@@ -36,6 +36,7 @@ id("buybutton").addEventListener("click", function () {
     console.log("buy pressed");
     webSocket.send("301" + "buy");
     id("buy").style.display="none";
+id("rolldice").disabled = true;
 });
 
 //Send message if "dontbuybutton" is clicked
@@ -43,6 +44,16 @@ id("dontbuybutton").addEventListener("click", function () {
     console.log("dont buy pressed");
     webSocket.send("301" + "dontbuy");
     id("buy").style.display="none";
+id("rolldice").disabled = true;
+});
+
+//Send message if "rolldice" is clicked
+id("rolldice").addEventListener("click", function () {
+    console.log("button pressed");
+    webSocket.send("101" + "RollDice");
+    id("turn").style.display="none";
+    id("wait").style.display="block";
+id("rolldice").disabled = true;
 });
 
 //Update the chat-panel, and the list of connected users

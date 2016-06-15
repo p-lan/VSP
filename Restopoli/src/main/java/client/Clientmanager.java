@@ -83,7 +83,7 @@ public class Clientmanager {
         System.out.println(event.getGame() + " , " + event.getPlayer());
 
         for (Client c : _clientList){
-            if (Pattern.matches(c.get_boardId(), event.getGame())){
+            if (Pattern.matches(c.get_boardId(), event.getGame()) || true){
                 sendIt(c.get_session(), event, "event");
                 if (Pattern.matches(event.getType(), "dice")){
                     if (Pattern.matches(c.get_pawnId(), event.getPlayer())){
@@ -314,12 +314,14 @@ public class Clientmanager {
 
                     JSONObject broker = Unirest.get(gameservices.getString("board") + place.getString("broker")).asJson().getBody().getObject();
 
-                    JSONObject owner = Unirest.get(gameservices.getString("board") + broker.getString("owner")).asJson().getBody().getObject();
+                    int owner = Unirest.get(gameservices.getString("board") + broker.getString("owner")).asJson().getStatus();
 
                     System.out.println("Owner" + owner);
 
-                    if (owner == null){
-                        sendIt(client.get_session(), owner.getString("cost").toString(), "buy");
+                    if (owner == 404){
+                        sendIt(client.get_session(), "Strassenname", "buy");
+                    } else {
+                        sayReady(client.get_session());
                     }
 
                 } catch (UnirestException e) {
@@ -502,9 +504,16 @@ public class Clientmanager {
 
             String PlayerReadyUri = game.getString("uri") + client.get_readyId();
             System.out.println("say ready to : "+PlayerReadyUri);
+
+            String gamestatus = Unirest.get(client.get_gameUrl()).asJson().getBody().getObject().get("status").toString();
+            if (gamestatus.equals("REGISTRATION")){
+                sendIt(user, "startgame", "startgame");
+            }
+
             HttpResponse<String> ready = Unirest.put(PlayerReadyUri).asString();
 
-            sendIt(user, "startgame", "startgame");
+
+
 
         } catch (UnirestException e) {
             e.printStackTrace();
